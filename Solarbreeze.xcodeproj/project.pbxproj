@@ -17,6 +17,12 @@
 		6DC2DDE31CF93663008ECB57 /* FakeBaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDE21CF93663008ECB57 /* FakeBaseInterface.swift */; };
 		6DC2DDE71CF93F17008ECB57 /* NSData+subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDE61CF93F17008ECB57 /* NSData+subscript.swift */; };
 		6DC2DDE91CF93FC8008ECB57 /* String+asciiValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDE81CF93FC8008ECB57 /* String+asciiValue.swift */; };
+		6DC9CFA71CFA2E720028700C /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFA61CFA2E720028700C /* Token.swift */; };
+		6DC9CFA91CFA2EC80028700C /* MifareClassic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFA81CFA2EC80028700C /* MifareClassic.swift */; };
+		6DC9CFAB1CFA2F4D0028700C /* NSData+hexstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFAA1CFA2F4D0028700C /* NSData+hexstring.swift */; };
+		6DC9CFAD1CFA335A0028700C /* NSData+asUint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFAC1CFA335A0028700C /* NSData+asUint.swift */; };
+		6DC9CFAF1CFA39F40028700C /* ThePoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFAE1CFA39F40028700C /* ThePoster.swift */; };
+		6DC9CFB11CFA3B960028700C /* Dictionary+get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +38,12 @@
 		6DC2DDE21CF93663008ECB57 /* FakeBaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeBaseInterface.swift; sourceTree = "<group>"; };
 		6DC2DDE61CF93F17008ECB57 /* NSData+subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+subscript.swift"; sourceTree = "<group>"; };
 		6DC2DDE81CF93FC8008ECB57 /* String+asciiValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+asciiValue.swift"; sourceTree = "<group>"; };
+		6DC9CFA61CFA2E720028700C /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		6DC9CFA81CFA2EC80028700C /* MifareClassic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MifareClassic.swift; sourceTree = "<group>"; };
+		6DC9CFAA1CFA2F4D0028700C /* NSData+hexstring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+hexstring.swift"; sourceTree = "<group>"; };
+		6DC9CFAC1CFA335A0028700C /* NSData+asUint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+asUint.swift"; sourceTree = "<group>"; };
+		6DC9CFAE1CFA39F40028700C /* ThePoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThePoster.swift; sourceTree = "<group>"; };
+		6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+get.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,9 +79,15 @@
 				6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */,
 				6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */,
 				6DC2DDD01CF93465008ECB57 /* SecondViewController.swift */,
+				6DC9CFA81CFA2EC80028700C /* MifareClassic.swift */,
+				6DC9CFA61CFA2E720028700C /* Token.swift */,
+				6DC9CFAE1CFA39F40028700C /* ThePoster.swift */,
 				6DC2DDE01CF9360C008ECB57 /* FakeBase.swift */,
 				6DC2DDE21CF93663008ECB57 /* FakeBaseInterface.swift */,
+				6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */,
+				6DC9CFAC1CFA335A0028700C /* NSData+asUint.swift */,
 				6DC2DDE81CF93FC8008ECB57 /* String+asciiValue.swift */,
+				6DC9CFAA1CFA2F4D0028700C /* NSData+hexstring.swift */,
 				6DC2DDE61CF93F17008ECB57 /* NSData+subscript.swift */,
 				6DC2DDD21CF93465008ECB57 /* Main.storyboard */,
 				6DC2DDD51CF93465008ECB57 /* Assets.xcassets */,
@@ -151,13 +169,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DC9CFAF1CFA39F40028700C /* ThePoster.swift in Sources */,
 				6DC2DDE31CF93663008ECB57 /* FakeBaseInterface.swift in Sources */,
 				6DC2DDD11CF93465008ECB57 /* SecondViewController.swift in Sources */,
+				6DC9CFAD1CFA335A0028700C /* NSData+asUint.swift in Sources */,
 				6DC2DDE71CF93F17008ECB57 /* NSData+subscript.swift in Sources */,
+				6DC9CFA91CFA2EC80028700C /* MifareClassic.swift in Sources */,
 				6DC2DDCD1CF93465008ECB57 /* AppDelegate.swift in Sources */,
 				6DC2DDCF1CF93465008ECB57 /* FirstViewController.swift in Sources */,
+				6DC9CFB11CFA3B960028700C /* Dictionary+get.swift in Sources */,
 				6DC2DDE11CF9360C008ECB57 /* FakeBase.swift in Sources */,
+				6DC9CFAB1CFA2F4D0028700C /* NSData+hexstring.swift in Sources */,
 				6DC2DDE91CF93FC8008ECB57 /* String+asciiValue.swift in Sources */,
+				6DC9CFA71CFA2E720028700C /* Token.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +331,7 @@
 				6DC2DDDF1CF93465008ECB57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
