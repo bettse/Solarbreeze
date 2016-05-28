@@ -21,7 +21,7 @@ func ==(lhs: MifareClassic, rhs: MifareClassic) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class MifareClassic : Hashable {
+class MifareClassic : Hashable, CustomStringConvertible {
     static let sectorSize : Int = 4 //Blocks
     static let sectorCount : Int = 0x10
     static let blockCount : Int = sectorSize * sectorCount
@@ -39,6 +39,11 @@ class MifareClassic : Hashable {
         get {
             return "\(uid.toHex).bin"
         }
+    }
+    
+    var description: String {
+        let me = String(self.dynamicType).componentsSeparatedByString(".").last!
+        return "\(me)(\(uid.toHex))"
     }
     
     init(uid: NSData) {

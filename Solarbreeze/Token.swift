@@ -8,16 +8,16 @@
 
 import Foundation
 import UIKit
+import CryptoSwift
 
-class Token : MifareClassic, CustomStringConvertible {
+class Token : MifareClassic {
     static let fileManager = NSFileManager()
     static let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     let BINARY = 2
     let HEX = 0x10
-
     
-    var description: String {
+    override var description: String {
         let me = String(self.dynamicType).componentsSeparatedByString(".").last!
         return "\(me)(\(uid.toHex) - \(name))"
     }
@@ -27,22 +27,35 @@ class Token : MifareClassic, CustomStringConvertible {
             return "\(uid.toHex)-\(name).bin"
         }
     }
-    
+
+    //Also known as 'ID' or 'type'.  I wanted to avoid those terms because of their alternate meanings
     var modelId : UInt16 {
         get {
             return block(1).subdataWithRange(NSMakeRange(0, 2)).uint16
         }
     }
     
+    var flags : UInt16 {
+        get {
+            return block(1).subdataWithRange(NSMakeRange(12, 2)).uint16
+        }
+    }
+    
     var model : Model {
         get {
-            return Model(id: UInt(modelId))
+            return Model(id: UInt(modelId), flags: UInt(flags))
         }
     }
     
     var name : String {
         get {
             return model.name
+        }
+    }
+    
+    var role : Role {
+        get {
+            return model.role
         }
     }
     
@@ -74,6 +87,10 @@ class Token : MifareClassic, CustomStringConvertible {
     }
     
     func skipEncryption(blockNumber: Int, blockData: NSData) -> Bool {
+        if (blockData.length != MifareClassic.blockSize) {
+            print("blockData must be exactly \(MifareClassic.blockSize) bytes")
+            return true
+        }
         return (blockNumber < 8 || sectorTrailer(blockNumber) || blockData.isEqualToData(emptyBlock))
     }
     
@@ -88,11 +105,11 @@ class Token : MifareClassic, CustomStringConvertible {
         preKey.appendData(block(1))
         preKey.appendByte(blockNumber)
         preKey.appendData(suffix.rot13.dataUsingEncoding(NSUTF8StringEncoding)!)
-        
-        
-        //CC_MD5(preKey.bytes, (unsigned int)preKey.length, key);
-        
-        return NSData(data: preKey)
+        return NSData(data: preKey).md5()
+    }
+    
+    override func block(blockNumber: Int) -> NSData {
+        return decrypt(blockNumber, blockData: super.block(blockNumber))
     }
     
     func decrypt(blockNumber: Int, blockData: NSData) -> NSData {
@@ -104,30 +121,47 @@ class Token : MifareClassic, CustomStringConvertible {
     }
     
     func commonCrypt(blockNumber: Int, blockData: NSData, encrypt: Bool) -> NSData {
-        if (blockData.length != MifareClassic.blockSize) {
-            print("blockData must be exactly \(MifareClassic.blockSize) bytes")
-            return blockData
-        }
-        
         if (skipEncryption(blockNumber, blockData: blockData)) {
             return blockData
         }
-        
-        /*
         let key = self.keyForBlock(blockNumber)
         
-        let aes = try! AES(key: key.arrayOfBytes(), blockMode: .ECB)
+        let aes = try! AES(key: key.arrayOfBytes(), blockMode: .ECB, padding: NoPadding())
         var newBytes : [UInt8]
         
         if (encrypt) {
-            newBytes = try! aes.encrypt(blockData.arrayOfBytes(), padding: nil)
+            newBytes = try! aes.encrypt(blockData.arrayOfBytes())
         } else {
-            newBytes = try! aes.decrypt(blockData.arrayOfBytes(), padding: nil)
+            newBytes = try! aes.decrypt(blockData.arrayOfBytes())
         }
         
         return NSData(bytes: newBytes)
-        */
-        return blockData
+    }
+    
+    //Return instance of correct subclass
+    static func factory(data: NSData) -> Token {
+        let t = Token(image: data)
+        switch(t.role) {
+        case .Skylander:
+            return SkylanderToken(image: data)
+        case .Giant:
+            return SkylanderToken(image: data)
+        case .TrapMaster:
+            return SkylanderToken(image: data)
+        case .SWAPForce:
+            return SkylanderToken(image: data)
+        case .SuperCharger:
+            return SkylanderToken(image: data)
+        case .Sidekick:
+            return SkylanderToken(image: data)
+        case .Mini:
+            return SkylanderToken(image: data)
+        //case .Vehicle:
+        //case .MagicItem: //Includes Traps, includes AdventurePacks
+    
+        default:
+            return t
+        }
     }
     
     static func all() -> [Token] {
@@ -144,7 +178,7 @@ class Token : MifareClassic, CustomStringConvertible {
                 if file.absoluteString.hasSuffix("bin") { // checks the extension
                     if let image = NSData(contentsOfURL: file as! NSURL) {
                         if (image.length == MifareClassic.tokenSize) {
-                            fileList.append(Token(image: image))
+                            fileList.append(Token.factory(image))
                         }
                     }
                 }

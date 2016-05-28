@@ -17,15 +17,38 @@ import UIKit
  at a list of the figures, their pictures, or stats
  */
 
+enum Element : UInt {
+    case None, Magic, Earth, Water, Fire, Tech, Undead, Life, Air, Dark, Light
+}
+
+enum Series : UInt {
+    case None, SpyrosAdventure, Giants, SwapForce, TrapTeam, SuperChargers, Sky6
+}
+
+//Adventure Packs are categorized as MagicItems.
+enum Role : UInt {
+    case None, Skylander, Giant, SWAPForce, TrapMaster, SuperCharger, Vehicle, Sidekick, Mini, MagicItem
+}
+
 class Model {
-    var id : UInt
-    enum Element : UInt {
-        case None, Magic, Earth, Water, Fire, Tech, Undead, Life, Air, Dark, Light
-    }
+    let id : UInt
+    let flags : UInt
     
     var name : String {
+        //TODO: Enhance this to account for the value of the flags, like the different trap names
+        //and Alter Egos
         return ThePoster.getName(id)
     }
+    
+    var role : Role {
+        return ThePoster.getRole(id)
+    }
+    
+    /*
+    var element : Element {
+        return ThePoster.getElement(id)
+    }
+    */
     
     /*
     var color : UIColor {
@@ -45,8 +68,9 @@ class Model {
     }
     */
     
-    init(id: UInt) {
+    init(id: UInt, flags: UInt = 0) {
         self.id = id
+        self.flags = flags
     }
     
     /*
@@ -65,8 +89,33 @@ class ThePoster {
         return names.get(id, defaultValue: "<\(id)>")
     }
     
-    static let names : [UInt:String] = [
+    static func getRole(id: UInt) -> Role {
+        return roleMap.get(id, defaultValue: Role.None)
+    }
     
+    static let roleMap : [UInt:Role] = [
+        0x0 : .Skylander,
+        0x1 : .Skylander,
+        0x2 : .Skylander,
+        0x3 : .Skylander,
+        
+        0x1CE : .TrapMaster,
+        
+        //Traps, not sure if I think they should be generic MagicItem instead of a unique "Trap" Role
+        0xD2 : .MagicItem,
+        0xD3 : .MagicItem,
+        0xD4 : .MagicItem,
+        0xD5 : .MagicItem,
+        0xD6 : .MagicItem,
+        0xD7 : .MagicItem,
+        0xD8 : .MagicItem,
+        0xD9 : .MagicItem,
+        0xDA : .MagicItem,
+        0xDB : .MagicItem,
+        0xDC : .MagicItem,
+    ]
+    
+    static let names : [UInt:String] = [
     0x0 : "Whirlwind",
     0x1 : "Sonic Boom",
     0x2 : "Warnado",
@@ -318,6 +367,5 @@ class ThePoster {
     0xDAD : "Land Trophy",
     0xDAE : "Sea Trophy",
     0xDAF : "Kaos Trophy"
-
     ]
 }
