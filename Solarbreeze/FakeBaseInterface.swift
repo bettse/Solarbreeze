@@ -102,6 +102,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
         for request in requests {
             peripheral.respondToRequest(request, withResult: CBATTError.Success)
             if let newValue = request.value {
+                print("<= \(newValue)")
                 for callback in incomingReportCallbacks {
                     callback(newValue)
                 }
@@ -112,7 +113,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     func outgoingReport(report: NSData) {
         if let peripheralManager = self.peripheralManager {
             if peripheralManager.state == CBPeripheralManagerState.PoweredOn {
-                NSLog("FakeBase => \(report)")
+                print("=> \(report)")
                 peripheralManager.updateValue(report, forCharacteristic: self.readCharacteristic, onSubscribedCentrals: nil)
             } else {
                 print("Attempted to send report when peripheralManager was not powered on")
