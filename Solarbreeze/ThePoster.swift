@@ -18,8 +18,8 @@ import UIKit
  */
 
 class Model {
-    var id : Int
-    enum Element : Int {
+    var id : UInt
+    enum Element : UInt {
         case None, Magic, Earth, Water, Fire, Tech, Undead, Life, Air, Dark, Light
     }
     
@@ -45,7 +45,7 @@ class Model {
     }
     */
     
-    init(id: Int) {
+    init(id: UInt) {
         self.id = id
     }
     
@@ -61,11 +61,11 @@ class ThePoster {
         return names.keys.map{return Model(id: $0)}.sort({ $0.id < $1.id })
     }()
     
-    static func getName(id: Int) -> String {
+    static func getName(id: UInt) -> String {
         return names.get(id, defaultValue: "<\(id)>")
     }
     
-    static let names : [Int:String] = [
+    static let names : [UInt:String] = [
     
     0x0 : "Whirlwind",
     0x1 : "Sonic Boom",
