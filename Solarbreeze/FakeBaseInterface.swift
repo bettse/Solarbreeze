@@ -13,7 +13,7 @@ import CoreBluetooth
 class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     typealias incomingReport = (Report) -> Void
     
-    //PORTAL_SERVICE_UUID_SHORT @"1530"
+    static let short_service_uuid = CBUUID(string: "1530")
     static let service_uuid = CBUUID(string: "533E1530-3ABE-F33F-CD00-594E8B0A8EA3")
     static let write_uuid = CBUUID(string: "533E1543-3ABE-F33F-CD00-594E8B0A8EA3")
     static let read_uuid = CBUUID(string: "533E1542-3ABE-F33F-CD00-594E8B0A8EA3")
@@ -62,7 +62,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
                 [
                     CBAdvertisementDataIsConnectable: true,
                     CBAdvertisementDataSolicitedServiceUUIDsKey: [FakeBaseInterface.service_uuid],
-                    CBAdvertisementDataServiceUUIDsKey: [FakeBaseInterface.service_uuid],
+                    CBAdvertisementDataServiceUUIDsKey: [FakeBaseInterface.short_service_uuid],
                     CBAdvertisementDataLocalNameKey: "Skylanders Portal\0"
                 ]
             )
@@ -96,7 +96,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     }
     
     func peripheralManager(peripheral: CBPeripheralManager, didAddService service: CBService, error: NSError?) {
-        print("didAddService")
+        //print("didAddService")
     }
     
     func peripheralManager(peripheral: CBPeripheralManager, didReceiveReadRequest request: CBATTRequest) {
