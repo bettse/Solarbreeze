@@ -26,7 +26,8 @@ class FakeBase {
         bleInterface.stop()
     }
 
-    func incomingReport(report: Report) {
-        print("Received a report \(report)")
+    func incomingReport(report: NSData) {
+        print("=> \(report)")
+        
     }
 }

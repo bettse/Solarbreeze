@@ -11,7 +11,7 @@ import CoreBluetooth
 
 //This class represents the BLE interface for fake base
 class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
-    typealias incomingReport = (Report) -> Void
+    typealias incomingReport = (NSData) -> Void
     
     static let short_service_uuid = CBUUID(string: "1530")
     static let service_uuid = CBUUID(string: "533E1530-3ABE-F33F-CD00-594E8B0A8EA3")
@@ -29,11 +29,6 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     var previousValue : NSMutableData?
     
     func start() {
-        //Serial queue
-        //let queue = dispatch_queue_create("org.ericbetts.DIMBLE", nil)
-        //Concurrent queue
-        //let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
-        //Main queue
         let queue = dispatch_get_main_queue()
         peripheralManager = CBPeripheralManager(delegate: self, queue: queue)
     }
@@ -108,17 +103,17 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
             peripheral.respondToRequest(request, withResult: CBATTError.Success)
             if let newValue = request.value {
                 for callback in incomingReportCallbacks {
-                    callback(Report(data: newValue))
+                    callback(newValue)
                 }
             }
         }
     }
     
-    func outgoingReport(report: Report) {
+    func outgoingReport(report: NSData) {
         if let peripheralManager = self.peripheralManager {
             if peripheralManager.state == CBPeripheralManagerState.PoweredOn {
-                NSLog("FakeBase =/> \(report) NOT COMPLETE")
-                //peripheralManager.updateValue(report.serialize(), forCharacteristic: self.readCharacteristic, onSubscribedCentrals: nil)
+                NSLog("FakeBase => \(report)")
+                peripheralManager.updateValue(report, forCharacteristic: self.readCharacteristic, onSubscribedCentrals: nil)
             } else {
                 print("Attempted to send report when peripheralManager was not powered on")
             }
