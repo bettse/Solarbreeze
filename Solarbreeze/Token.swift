@@ -19,7 +19,7 @@ class Token : MifareClassic, CustomStringConvertible {
     
     var description: String {
         let me = String(self.dynamicType).componentsSeparatedByString(".").last!
-        return "\(me)(\(uid) - \(modelId))"
+        return "\(me)(\(uid.toHex) - \(name))"
     }
     
     override var filename : String {
@@ -71,6 +71,63 @@ class Token : MifareClassic, CustomStringConvertible {
 
     func primaryData(offset: Int) -> NSData {
         return block(primaryAreaNumber + offset)
+    }
+    
+    func skipEncryption(blockNumber: Int, blockData: NSData) -> Bool {
+        return (blockNumber < 8 || sectorTrailer(blockNumber) || blockData.isEqualToData(emptyBlock))
+    }
+    
+    func keyForBlock(blockNumber: Int) -> NSData {
+        return keyForBlock(UInt8(blockNumber))
+    }
+    
+    func keyForBlock(blockNumber: UInt8) -> NSData {
+        let suffix : String = "Pbclevtug (P) 2010 Npgvivfvba. Nyy Evtugf Erfreirq. "
+        let preKey = NSMutableData()
+        preKey.appendData(block(0))
+        preKey.appendData(block(1))
+        preKey.appendByte(blockNumber)
+        preKey.appendData(suffix.rot13.dataUsingEncoding(NSUTF8StringEncoding)!)
+        
+        
+        //CC_MD5(preKey.bytes, (unsigned int)preKey.length, key);
+        
+        return NSData(data: preKey)
+    }
+    
+    func decrypt(blockNumber: Int, blockData: NSData) -> NSData {
+        return commonCrypt(blockNumber, blockData: blockData, encrypt: false)
+    }
+    
+    func encrypt(blockNumber: Int, blockData: NSData) -> NSData {
+        return commonCrypt(blockNumber, blockData: blockData, encrypt: true)
+    }
+    
+    func commonCrypt(blockNumber: Int, blockData: NSData, encrypt: Bool) -> NSData {
+        if (blockData.length != MifareClassic.blockSize) {
+            print("blockData must be exactly \(MifareClassic.blockSize) bytes")
+            return blockData
+        }
+        
+        if (skipEncryption(blockNumber, blockData: blockData)) {
+            return blockData
+        }
+        
+        /*
+        let key = self.keyForBlock(blockNumber)
+        
+        let aes = try! AES(key: key.arrayOfBytes(), blockMode: .ECB)
+        var newBytes : [UInt8]
+        
+        if (encrypt) {
+            newBytes = try! aes.encrypt(blockData.arrayOfBytes(), padding: nil)
+        } else {
+            newBytes = try! aes.decrypt(blockData.arrayOfBytes(), padding: nil)
+        }
+        
+        return NSData(bytes: newBytes)
+        */
+        return blockData
     }
     
     static func all() -> [Token] {
