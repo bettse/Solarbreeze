@@ -16,7 +16,10 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         onSwitch.addTarget(self, action: #selector(self.firmwareSwitch), forControlEvents: .ValueChanged)
-        // Do any additional setup after loading the view, typically from a nib.
+        let library : [Token] = Token.all()
+        library.forEach { (token) in
+            print(token)
+        }        
     }
 
     override func didReceiveMemoryWarning() {
