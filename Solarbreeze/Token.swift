@@ -22,17 +22,27 @@ class Token : MifareClassic, CustomStringConvertible {
         return "\(me)(\(uid) - \(modelId))"
     }
     
-    /*
     override var filename : String {
         get {
-            return "\(uid.hexadecimalString)-\(name).bin"
+            return "\(uid.toHex)-\(name).bin"
         }
     }
-    */
     
     var modelId : UInt16 {
         get {
             return block(1).subdataWithRange(NSMakeRange(0, 2)).uint16
+        }
+    }
+    
+    var model : Model {
+        get {
+            return Model(id: UInt(modelId))
+        }
+    }
+    
+    var name : String {
+        get {
+            return model.name
         }
     }
     
