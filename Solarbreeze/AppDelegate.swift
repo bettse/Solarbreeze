@@ -13,7 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    let fileManager = NSFileManager.defaultManager()
+    
+    var applicationDocumentsDirectory: NSURL {
+        get {
+            return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        }
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         return true
