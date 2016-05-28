@@ -25,9 +25,11 @@
 		6DC9CFB11CFA3B960028700C /* Dictionary+get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */; };
 		6DC9CFB31CFA43490028700C /* NSMutableData+appendByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB21CFA43490028700C /* NSMutableData+appendByte.swift */; };
 		6DC9CFB51CFA45230028700C /* String+rot13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB41CFA45230028700C /* String+rot13.swift */; };
+		EF9A6D5BD623A79620D2823A /* Pods_Solarbreeze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEC75DC273BDD59D8A60D88 /* Pods_Solarbreeze.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6BB4038B0A0281ACF51716D7 /* Pods-Solarbreeze.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solarbreeze.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Solarbreeze/Pods-Solarbreeze.debug.xcconfig"; sourceTree = "<group>"; };
 		6DC2DDC91CF93465008ECB57 /* Solarbreeze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solarbreeze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +50,8 @@
 		6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+get.swift"; sourceTree = "<group>"; };
 		6DC9CFB21CFA43490028700C /* NSMutableData+appendByte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableData+appendByte.swift"; sourceTree = "<group>"; };
 		6DC9CFB41CFA45230028700C /* String+rot13.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+rot13.swift"; sourceTree = "<group>"; };
+		75396A9558424F3BE9333A87 /* Pods-Solarbreeze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solarbreeze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Solarbreeze/Pods-Solarbreeze.release.xcconfig"; sourceTree = "<group>"; };
+		9DEC75DC273BDD59D8A60D88 /* Pods_Solarbreeze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Solarbreeze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,17 +59,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF9A6D5BD623A79620D2823A /* Pods_Solarbreeze.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		443BF5250F8D37CC50F45157 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DEC75DC273BDD59D8A60D88 /* Pods_Solarbreeze.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6DC2DDC01CF93465008ECB57 = {
 			isa = PBXGroup;
 			children = (
 				6DC2DDCB1CF93465008ECB57 /* Solarbreeze */,
 				6DC2DDCA1CF93465008ECB57 /* Products */,
+				75B47BB6AB71CDEE9AEEA67E /* Pods */,
+				443BF5250F8D37CC50F45157 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +118,15 @@
 			path = Solarbreeze;
 			sourceTree = "<group>";
 		};
+		75B47BB6AB71CDEE9AEEA67E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6BB4038B0A0281ACF51716D7 /* Pods-Solarbreeze.debug.xcconfig */,
+				75396A9558424F3BE9333A87 /* Pods-Solarbreeze.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -110,9 +134,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6DC2DDDD1CF93465008ECB57 /* Build configuration list for PBXNativeTarget "Solarbreeze" */;
 			buildPhases = (
+				BBFEEDDEB9AA36279A873046 /* 📦 Check Pods Manifest.lock */,
 				6DC2DDC51CF93465008ECB57 /* Sources */,
 				6DC2DDC61CF93465008ECB57 /* Frameworks */,
 				6DC2DDC71CF93465008ECB57 /* Resources */,
+				A9A3A165EA3AC8B27836B7EE /* 📦 Embed Pods Frameworks */,
+				D56DB4995CC7A4DAE0393367 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -169,6 +196,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A9A3A165EA3AC8B27836B7EE /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Solarbreeze/Pods-Solarbreeze-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBFEEDDEB9AA36279A873046 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D56DB4995CC7A4DAE0393367 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Solarbreeze/Pods-Solarbreeze-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6DC2DDC51CF93465008ECB57 /* Sources */ = {
@@ -300,6 +375,7 @@
 		};
 		6DC2DDDE1CF93465008ECB57 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6BB4038B0A0281ACF51716D7 /* Pods-Solarbreeze.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Solarbreeze/Info.plist;
@@ -311,6 +387,7 @@
 		};
 		6DC2DDDF1CF93465008ECB57 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 75396A9558424F3BE9333A87 /* Pods-Solarbreeze.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Solarbreeze/Info.plist;
