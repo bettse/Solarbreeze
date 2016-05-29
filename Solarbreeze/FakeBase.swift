@@ -11,6 +11,7 @@ import UIKit
 
 class FakeBase {
     static let singleton = FakeBase()
+    let HEX = 0x10
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let bleInterface = FakeBaseInterface()
     
@@ -26,17 +27,8 @@ class FakeBase {
         }
     }
     
-    //Status is 16 pairs of bits
-    //high bit shows...
-    //low bit shows...
-    //coming = 
-    //going = 
-    //still here = 
-    //not here = 00
-    var currentStatus : UInt32 = 0;
-    var nextStatus : UInt32 = 0;
-    
-    let onPortal : [Token] = [Token]()
+    var status : UInt32 = 0;
+    var activeTokens : [Int:Token] = [Int:Token]()
     
     init() {
         bleInterface.registerIncomingReportCallback(incomingReport)
@@ -49,15 +41,29 @@ class FakeBase {
     func stop() {
         bleInterface.stop()
     }
-
     
+    /*
+     Status is 16 pairs of bits
+     high bit: token state changed
+     low bit: token present
+     
+     00 = no token
+     01 = token present
+     10 = token left (present, changing state to not present)
+     11 = token entered (not present, changing state to present)
+     */
     func placeToken(newToken: Token) {
-        //Sparse array in swift?
-        //Add to nextStatus
+        let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? 0
+        activeTokens[openIndex] = newToken
+        status = status | (0b11 << (2 * UInt32(openIndex)))
+        print("status is \(String(status, radix: HEX))")
     }
     
     func removeToken(oldToken: Token) {
-        
+        let index = activeTokens.filter{ $0.1.uid == oldToken.uid }.map{ $0.0 }.first ?? 0
+        activeTokens.removeValueForKey(index)
+        status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
+        print("status is \(String(status, radix: HEX))")
     }
     
     func incomingReport(report: NSData) {
@@ -79,9 +85,10 @@ class FakeBase {
             response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
             break;
         case "S".asciiValue:
-            //shift nextStatus and OR into currentdStatus
-            response = NSData(bytes: [report[0], 0x00, 0x00, 0x00, 0x00, nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
-            //copy nextStatus into currentStatus, zero out nextStatus
+            let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
+            response = NSData(bytes: [report[0], s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
+            //Clear update bits
+            status = status & 0x55555555 //0x55 = 0b01010101
             break;
         case "W".asciiValue:
             response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
