@@ -80,6 +80,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Virtual Base" image="first" id="acW-dT-cKf"/>
                     <connections>
+                        <outlet property="libraryView" destination="blW-YO-aMC" id="9vi-QI-8k2"/>
                         <outlet property="onSwitch" destination="VYv-IC-i2t" id="K6E-lB-mxa"/>
                     </connections>
                 </viewController>

@@ -10,6 +10,7 @@ import UIKit
 
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var onSwitch: UISwitch!
+    @IBOutlet weak var libraryView : UICollectionView!
 
     let fakeBase = FakeBase.singleton
     var library : [Token] = {
@@ -19,6 +20,12 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
         onSwitch.addTarget(self, action: #selector(self.firmwareSwitch), forControlEvents: .ValueChanged)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        //Reload tokens
+        library = Token.all()
+        libraryView.reloadData()        
     }
 
     override func didReceiveMemoryWarning() {
