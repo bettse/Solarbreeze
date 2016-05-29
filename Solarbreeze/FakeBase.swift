@@ -53,17 +53,21 @@ class FakeBase {
      11 = token entered (not present, changing state to present)
      */
     func placeToken(newToken: Token) {
-        let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? 0
+        let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count        
         activeTokens[openIndex] = newToken
         status = status | (0b11 << (2 * UInt32(openIndex)))
-        print("status is \(String(status, radix: HEX))")
+        print("Placed at \(openIndex), status is \(String(status, radix: HEX))")
     }
     
     func removeToken(oldToken: Token) {
-        let index = activeTokens.filter{ $0.1.uid == oldToken.uid }.map{ $0.0 }.first ?? 0
-        activeTokens.removeValueForKey(index)
-        status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
-        print("status is \(String(status, radix: HEX))")
+        let index = activeTokens.filter{ $0.1.uid == oldToken.uid }.map{ $0.0 }.first
+        if let index = index {
+            activeTokens.removeValueForKey(index)
+            status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
+            print("Removed from \(index), status is \(String(status, radix: HEX))")
+        } else {
+            print("Tried to remove token that wasn't active")
+        }
     }
     
     func incomingReport(report: NSData) {
