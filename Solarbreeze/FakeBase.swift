@@ -56,6 +56,7 @@ class FakeBase {
         let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count        
         activeTokens[openIndex] = newToken
         status = status | (0b11 << (2 * UInt32(openIndex)))
+        sendStatus()
     }
     
     func removeToken(oldToken: Token) {
@@ -63,9 +64,27 @@ class FakeBase {
         if let index = index {
             activeTokens.removeValueForKey(index)
             status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
+            sendStatus()
         } else {
             print("Tried to remove token that wasn't active")
         }
+        
+    }
+    
+    func clearAllTokens() {
+        activeTokens.forEach { (index, token) in
+            removeToken(token)
+        }
+    }
+    
+    func sendStatus() {
+        var response : NSData = NSData()
+        print("\tstatus is 0x\(String(status, radix: HEX))")
+        let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
+        response = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
+        //Clear update bits
+        status = status & 0x55555555 //0x55 = 0b01010101
+        bleInterface.outgoingReport(response)
     }
     
     func incomingReport(report: NSData) {
@@ -75,12 +94,12 @@ class FakeBase {
         switch(report[0]){
         case "A".asciiValue:
             response = NSData(bytes: [report[0], report[1], 0x62, 0x02, 0x19, 0xaa, 0x01, 0x5e, 0x49, 0x53, 0xbb, 0x35, 0xc6] as [UInt8], length: 13)
-            break;
+            break
         case "J".asciiValue:
             response = NSData(bytes: [report[0], 0x00, 0x00, 0x00] as [UInt8], length: 4)
-            break;
+            break
         case "L".asciiValue:
-            break;
+            break
         case "Q".asciiValue:
             let temp = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3).mutableCopy()
             let index = Int(report[1] & 0x0f)
@@ -91,18 +110,14 @@ class FakeBase {
             }
             print("\tresponse \(temp    )")
             response = temp as! NSData
-            break;
+            break
         case "R".asciiValue:
             print("\tparameters: \(report)")
             response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
-            break;
+            break
         case "S".asciiValue:
-            print("\tstatus is 0x\(String(status, radix: HEX))")
-            let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
-            response = NSData(bytes: [report[0], s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
-            //Clear update bits
-            status = status & 0x55555555 //0x55 = 0b01010101
-            break;
+            sendStatus()
+            break
         case "W".asciiValue:
             let index = Int(report[1] & 0x0f)
             let blockNumber = report[2]
@@ -111,7 +126,7 @@ class FakeBase {
                 token.dump(appDelegate.applicationDocumentsDirectory)
             }
             response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
-            break;
+            break
         default:
             print("Unhandled \(report[0])")
         }

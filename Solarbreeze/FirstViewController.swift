@@ -23,9 +23,9 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     override func viewWillAppear(animated: Bool) {
-        //Reload tokens
+        //Reload tokens, but it also clears all selections
         library = Token.all()
-        libraryView.reloadData()        
+        libraryView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +40,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             fakeBase.start()
         } else {            
             fakeBase.stop()
+            fakeBase.clearAllTokens()
         }
     }
     

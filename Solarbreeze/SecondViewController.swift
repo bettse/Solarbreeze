@@ -42,11 +42,8 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let model = allModels[indexPath.row]
-        print("\(model.name) selected")
         let token = Token.build(model)
-        print("Created: \(token)")
         token.dump(appDelegate.applicationDocumentsDirectory)
-        //TODO: Reload library in firstviewcontroller
     }
 }
 
