@@ -56,7 +56,6 @@ class FakeBase {
         let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count        
         activeTokens[openIndex] = newToken
         status = status | (0b11 << (2 * UInt32(openIndex)))
-        print("Placed at \(openIndex), status is \(String(status, radix: HEX))")
     }
     
     func removeToken(oldToken: Token) {
@@ -64,7 +63,6 @@ class FakeBase {
         if let index = index {
             activeTokens.removeValueForKey(index)
             status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
-            print("Removed from \(index), status is \(String(status, radix: HEX))")
         } else {
             print("Tried to remove token that wasn't active")
         }
@@ -84,17 +82,32 @@ class FakeBase {
         case "L".asciiValue:
             break;
         case "Q".asciiValue:
+            let temp = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3).mutableCopy()
+            let index = Int(report[1] & 0x0f)
+            let blockNumber = report[2]
+            if let token = activeTokens[index] {
+                let mf = token as MifareClassic //Read blocks encrypted
+                temp.appendData(mf.block(blockNumber))
+            }
+            print("\tresponse \(temp    )")
+            response = temp as! NSData
             break;
         case "R".asciiValue:
             response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
             break;
         case "S".asciiValue:
+            print("\tstatus is 0x\(String(status, radix: HEX))")
             let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
             response = NSData(bytes: [report[0], s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
             //Clear update bits
             status = status & 0x55555555 //0x55 = 0b01010101
             break;
         case "W".asciiValue:
+            let index = Int(report[1] & 0x0f)
+            let blockNumber = report[2]
+            if let token = activeTokens[index] {
+                token.load(blockNumber, blockData: report.subdataWithRange(NSMakeRange(3, MifareClassic.blockSize)))
+            }
             response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
             break;
         default:

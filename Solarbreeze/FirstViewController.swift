@@ -31,7 +31,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         UIApplication.sharedApplication().idleTimerDisabled = onSwitch.on
         if onSwitch.on {
             fakeBase.start()
-        } else {
+        } else {            
             fakeBase.stop()
         }
     }
@@ -56,7 +56,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let selectedBackground = cell.selectedBackgroundView {
             selectedBackground.layer.borderColor = token.color.CGColor
             selectedBackground.layer.borderWidth = 3
-        }        
+        }
         
         if let label = cell.contentView.subviews.first as? UILabel {
             label.text = token.name
