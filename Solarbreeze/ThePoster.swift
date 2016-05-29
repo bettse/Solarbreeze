@@ -44,29 +44,31 @@ class Model {
         return ThePoster.getRole(id)
     }
     
-    /*
-    var element : Element {
-        return ThePoster.getElement(id)
-    }
-    */
     
-    /*
+    var element : Element {
+        return .None
+        //FIXME
+        //return ThePoster.getElement(id)
+    }
+ 
+    
+    
     var color : UIColor {
         switch (self.element) {
-        case None: return UIColor.whiteColor()
-        case Magic: return UIColor.purpleColor()
-        case Earth: return UIColor.brownColor()
-        case Water: return UIColor.blueColor()
-        case Fire: return UIColor.redColor()
-        case Tech: return UIColor.orangeColor()
-        case Undead: return UIColor.grayColor()
-        case Life: return UIColor.greenColor()
-        case Air: return UIColor.cyanColor()
-        case Dark: return UIColor.blackColor()
-        case Light: return UIColor.yellowColor()
+        case .None: return UIColor.whiteColor()
+        case .Magic: return UIColor.purpleColor()
+        case .Earth: return UIColor.brownColor()
+        case .Water: return UIColor.blueColor()
+        case .Fire: return UIColor.redColor()
+        case .Tech: return UIColor.orangeColor()
+        case .Undead: return UIColor.grayColor()
+        case .Life: return UIColor.greenColor()
+        case .Air: return UIColor.cyanColor()
+        case .Dark: return UIColor.blackColor()
+        case .Light: return UIColor.yellowColor()
         }
     }
-    */
+    
     
     init(id: UInt, flags: UInt = 0) {
         self.id = id

@@ -59,6 +59,12 @@ class Token : MifareClassic {
         }
     }
     
+    var color : UIColor {
+        get {
+            return model.color
+        }
+    }
+    
     var sequenceA : UInt8 {
         get {
             return block(0x08).subdataWithRange(NSMakeRange(9, 1)).uint8
