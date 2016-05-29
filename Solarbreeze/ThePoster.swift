@@ -58,7 +58,7 @@ enum Role : UInt {
 
 class Model {
     let id : UInt
-    let flags : UInt
+    var flags : UInt16 = 0
     
     var name : String {
         //TODO: Enhance this to account for the value of the flags, like the different trap names
@@ -163,10 +163,40 @@ class Model {
         }
     }
     
+    var defaultFlags : UInt16 {
+        get {
+            switch (role) {
+            case .Skylander, .TrapMaster, .Giant, .SuperCharger, .SWAPForce:
+                switch(series) {
+                    case .Giants:
+                        return 0x0110
+                    case .SwapForce:
+                        return 0x0520
+                    case .TrapTeam:
+                        return 0x0930
+                    case .SuperChargers:
+                        return 0x0040
+                    default: //Spyro's advenstures, etc
+                        return 0x0000
+                }
+            case .Vehicle:
+                return 0x0040
+            default: //Needs to handle traps later
+                return 0x0000
+            }
+            
+            
+        }
+    }
     
-    init(id: UInt, flags: UInt = 0) {
+    
+    init(id: UInt, flags: UInt16 = 0) {
         self.id = id
-        self.flags = flags
+        if (flags == 0) {
+            self.flags = defaultFlags
+        } else {
+            self.flags = flags
+        }
     }
     
     /*

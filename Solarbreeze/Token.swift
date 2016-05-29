@@ -47,14 +47,23 @@ class Token : MifareClassic {
         get {
             return block(1).subdataWithRange(NSMakeRange(12, 2)).uint16
         }
+        set (newFlags) {
+            //Assume this is happening on a zero'd out new token
+            var m = newFlags
+            let newBlock = block(1).mutableCopy()
+            newBlock.replaceBytesInRange(NSMakeRange(12, 2), withBytes: &m)
+            load(1, blockData: newBlock as! NSData)
+            updateCrc()
+        }
     }
     
     var model : Model {
         get {
-            return Model(id: UInt(modelId), flags: UInt(flags))
+            return Model(id: UInt(modelId), flags: flags)
         }
         set (newModel) {
             self.modelId = UInt16(newModel.id)
+            self.flags = newModel.flags
         }
     }
     
@@ -243,7 +252,7 @@ class Token : MifareClassic {
         
         
         fileList.sortInPlace({ (a, b) -> Bool in
-            return a.uid.uint32 > b.uid.uint32
+            return a.modelId < b.modelId
         })
         return fileList
     }
