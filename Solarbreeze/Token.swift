@@ -33,6 +33,14 @@ class Token : MifareClassic {
         get {
             return block(1).subdataWithRange(NSMakeRange(0, 2)).uint16
         }
+        set(newModelId) {
+            //Assume this is happening on a zero'd out new token
+            var m = newModelId
+            let newBlock = block(1).mutableCopy()
+            newBlock.replaceBytesInRange(NSMakeRange(0, 2), withBytes: &m)
+            load(1, blockData: newBlock as! NSData)
+            updateCrc()
+        }
     }
     
     var flags : UInt16 {
@@ -44,6 +52,9 @@ class Token : MifareClassic {
     var model : Model {
         get {
             return Model(id: UInt(modelId), flags: UInt(flags))
+        }
+        set (newModel) {
+            self.modelId = UInt16(newModel.id)
         }
     }
     
@@ -118,6 +129,15 @@ class Token : MifareClassic {
         return decrypt(blockNumber, blockData: super.block(blockNumber))
     }
     
+    func updateCrc() {
+        let block1 = block(1).subdataWithRange(NSMakeRange(0, 14)).mutableCopy()
+        let special = NSMutableData()
+        special.appendData(block(0))
+        special.appendData(block1 as! NSData)
+        block1.appendData(special.crcCCITT)
+        load(1, blockData: block1 as! NSData)
+    }
+    
     func decrypt(blockNumber: Int, blockData: NSData) -> NSData {
         return commonCrypt(blockNumber, blockData: blockData, encrypt: false)
     }
@@ -168,6 +188,30 @@ class Token : MifareClassic {
         default:
             return t
         }
+    }
+    
+    static func build(model: Model) -> Token {
+        var random = arc4random()
+        let uid = NSData(bytes: &random, length: sizeof(UInt32))
+        let token = Token(uid: uid)
+        
+        let zeros = NSData(fromHex: "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
+        let ro = NSData(fromHex: "00 00 00 00 00 00 0F 0F 0F 69 00 00 00 00 00 00")
+        let rw = NSData(fromHex: "00 00 00 00 00 00 7F 0F 08 69 00 00 00 00 00 00")
+
+        (1..<MifareClassic.blockCount).forEach { (blockNumber) in
+            if (blockNumber == 3) {
+                token.load(blockNumber, blockData: ro)
+            } else if (blockNumber % 4 == 3) {
+                token.load(blockNumber, blockData: rw)
+            } else {
+                token.load(blockNumber, blockData: zeros)
+            }
+        }
+        
+        token.model = model
+        
+        return token
     }
     
     static func all() -> [Token] {

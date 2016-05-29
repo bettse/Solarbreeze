@@ -93,6 +93,7 @@ class FakeBase {
             response = temp as! NSData
             break;
         case "R".asciiValue:
+            print("\tparameters: \(report)")
             response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
             break;
         case "S".asciiValue:
@@ -107,6 +108,7 @@ class FakeBase {
             let blockNumber = report[2]
             if let token = activeTokens[index] {
                 token.load(blockNumber, blockData: report.subdataWithRange(NSMakeRange(3, MifareClassic.blockSize)))
+                token.dump(appDelegate.applicationDocumentsDirectory)
             }
             response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
             break;

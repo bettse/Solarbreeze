@@ -48,6 +48,12 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     init(uid: NSData) {
         self.uid = uid
+        if (self.data.length > 3) { //Replace bytes
+            self.data.replaceBytesInRange(NSMakeRange(0, 4), withBytes: uid.bytes)
+        } else { //Add bytes
+            self.data.appendData(uid)
+            self.data.appendData(NSData(bytes: [UInt8](count: max(0, MifareClassic.blockSize - self.data.length), repeatedValue:0)))
+        }
     }
     
     
