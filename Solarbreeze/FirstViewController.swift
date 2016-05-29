@@ -37,39 +37,44 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("\(library.count) tokens")
-        return library.count
+        let count = library.count
+        if (count > 0) {
+            collectionView.allowsMultipleSelection = true
+        }
+        return count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let token = library[indexPath.row]
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellView", forIndexPath: indexPath)
         
-        if let subview = cell.subviews.first {
-            subview.layer.borderWidth = 1
-            subview.layer.borderColor = token.color.CGColor            
-            if let label = subview.subviews.first as? UILabel {
-                label.text = token.name
-                label.textColor = UIColor.whiteColor()
-                label.textAlignment = NSTextAlignment.Center
-            }
+        if let background = cell.backgroundView {
+            background.layer.borderColor = token.color.CGColor
+            background.layer.borderWidth = 1
+        }
+        
+        if let selectedBackground = cell.selectedBackgroundView {
+            selectedBackground.layer.borderColor = token.color.CGColor
+            selectedBackground.layer.borderWidth = 3
         }        
+        
+        if let label = cell.contentView.subviews.first as? UILabel {
+            label.text = token.name
+            label.textColor = UIColor.whiteColor()
+            label.textAlignment = NSTextAlignment.Center
+        }
         
         return cell
     }
     
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        let token = library[indexPath.row]
+        fakeBase.removeToken(token)
+    }
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let token = library[indexPath.row]
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
-            if (cell.selected) {
-                fakeBase.removeToken(token)
-                cell.selected = false
-            } else {
-                fakeBase.placeToken(token)
-                cell.selected = true
-            }
-        }
-        
+        fakeBase.placeToken(token)
     }
 }
 

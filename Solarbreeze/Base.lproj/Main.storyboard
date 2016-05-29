@@ -37,6 +37,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="96T-FC-qfe" userLabel="selectedBackground">
+                                                    <rect key="frame" x="8" y="8" width="84" height="78"/>
+                                                </view>
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n8N-R7-0pv" userLabel="background">
+                                                    <rect key="frame" x="8" y="8" width="84" height="84"/>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="middleTruncation" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-2k-jxc">
                                                     <rect key="frame" x="28" y="39" width="45" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -50,6 +56,10 @@
                                             <constraint firstItem="clr-2k-jxc" firstAttribute="centerY" secondItem="Pih-0w-lge" secondAttribute="centerY" id="9vN-Ui-FMd"/>
                                             <constraint firstItem="clr-2k-jxc" firstAttribute="centerX" secondItem="Pih-0w-lge" secondAttribute="centerX" id="hU2-cH-aI4"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="backgroundView" destination="n8N-R7-0pv" id="dL2-gR-wvm"/>
+                                            <outlet property="selectedBackgroundView" destination="96T-FC-qfe" id="FCM-0M-h0g"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
