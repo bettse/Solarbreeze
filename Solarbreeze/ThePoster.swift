@@ -28,6 +28,32 @@ enum Series : UInt {
 //Adventure Packs are categorized as MagicItems.
 enum Role : UInt {
     case None, Skylander, Giant, SWAPForce, TrapMaster, SuperCharger, Vehicle, Sidekick, Mini, MagicItem
+    var description : String {
+        get {
+            switch(self) {
+            case None:
+                return "None"
+            case Skylander:
+                return "Skylander"
+            case Giant:
+                return "Giant"
+            case SWAPForce:
+                return "SWAP Force"
+            case TrapMaster:
+                return "Trap Master"
+            case SuperCharger:
+                return "SuperCharger"
+            case Vehicle:
+                return "Vehicle"
+            case Sidekick:
+                return "Sidekick"
+            case Mini:
+                return "Mini"
+            case MagicItem:
+                return "Item"        
+            }        
+        }
+    }
 }
 
 class Model {
@@ -44,15 +70,12 @@ class Model {
         return ThePoster.getRole(id)
     }
     
-    
     var element : Element {
         return .None
         //FIXME
         //return ThePoster.getElement(id)
     }
  
-    
-    
     var color : UIColor {
         switch (self.element) {
         case .None: return UIColor.whiteColor()
@@ -92,30 +115,40 @@ class ThePoster {
     }
     
     static func getRole(id: UInt) -> Role {
-        return roleMap.get(id, defaultValue: Role.None)
+        //This is very rough
+        switch(id) {
+        case 0x0...0x20:
+            return .Skylander
+        case 0x64...0x73:
+            return .Skylander
+        case 0xC8...0xCF:
+            return .MagicItem
+        case 0xD0...0xD1:
+            return .MagicItem
+        case 0xD2...0xDC: //Traps
+            return .MagicItem
+        case 0xE6...0xE9:
+            return .MagicItem
+        case 0x12C...0x130: //Adventure packs
+            return .MagicItem
+        case 0x131...0x134: //TT Adventure packs
+            return .MagicItem
+        case 0x194...0x1AE: //Legends
+            return .Skylander
+        case 0x1C2...0x1FE:
+            return .Skylander
+        case 0x3E8...0xC84:
+            return .SWAPForce
+        case 0xC94...0xCA9:
+            return .Vehicle
+        case 0xD48...0xD64:
+            return .SuperCharger
+        case 0xDAC...0xDAF: //Trophies
+            return .MagicItem
+        default:
+            return .None
+        }
     }
-    
-    static let roleMap : [UInt:Role] = [
-        0x0 : .Skylander,
-        0x1 : .Skylander,
-        0x2 : .Skylander,
-        0x3 : .Skylander,
-        
-        0x1CE : .TrapMaster,
-        
-        //Traps, not sure if I think they should be generic MagicItem instead of a unique "Trap" Role
-        0xD2 : .MagicItem,
-        0xD3 : .MagicItem,
-        0xD4 : .MagicItem,
-        0xD5 : .MagicItem,
-        0xD6 : .MagicItem,
-        0xD7 : .MagicItem,
-        0xD8 : .MagicItem,
-        0xD9 : .MagicItem,
-        0xDA : .MagicItem,
-        0xDB : .MagicItem,
-        0xDC : .MagicItem,
-    ]
     
     static let names : [UInt:String] = [
         0x0 : "Whirlwind",

@@ -24,27 +24,33 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="blW-YO-aMC">
                                 <rect key="frame" x="20" y="67" width="560" height="461"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gbX-Ii-Vh7">
-                                    <size key="itemSize" width="100" height="100"/>
+                                    <size key="itemSize" width="125" height="125"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cellView" id="Pih-0w-lge">
-                                        <rect key="frame" x="10" y="10" width="100" height="100"/>
+                                        <rect key="frame" x="10" y="10" width="125" height="125"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="96T-FC-qfe" userLabel="selectedBackground">
-                                                    <rect key="frame" x="8" y="8" width="84" height="78"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96T-FC-qfe" userLabel="selectedBackground">
+                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                                 </view>
-                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n8N-R7-0pv" userLabel="background">
-                                                    <rect key="frame" x="8" y="8" width="84" height="84"/>
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8N-R7-0pv" userLabel="background">
+                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="middleTruncation" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-2k-jxc">
-                                                    <rect key="frame" x="28" y="39" width="45" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="wordWrap" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-2k-jxc">
+                                                    <rect key="frame" x="40" y="8" width="45" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Role" textAlignment="center" lineBreakMode="middleTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LON-fH-MZ5">
+                                                    <rect key="frame" x="45" y="36" width="34" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -53,8 +59,18 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="clr-2k-jxc" firstAttribute="centerY" secondItem="Pih-0w-lge" secondAttribute="centerY" id="9vN-Ui-FMd"/>
-                                            <constraint firstItem="clr-2k-jxc" firstAttribute="centerX" secondItem="Pih-0w-lge" secondAttribute="centerX" id="hU2-cH-aI4"/>
+                                            <constraint firstItem="96T-FC-qfe" firstAttribute="centerY" secondItem="Pih-0w-lge" secondAttribute="centerY" id="41n-8l-BoO"/>
+                                            <constraint firstItem="n8N-R7-0pv" firstAttribute="width" secondItem="Pih-0w-lge" secondAttribute="width" id="883-Fs-vcK"/>
+                                            <constraint firstItem="96T-FC-qfe" firstAttribute="centerX" secondItem="Pih-0w-lge" secondAttribute="centerX" id="91B-RB-eGo"/>
+                                            <constraint firstItem="96T-FC-qfe" firstAttribute="width" secondItem="Pih-0w-lge" secondAttribute="width" id="BZu-GE-Ec8"/>
+                                            <constraint firstItem="n8N-R7-0pv" firstAttribute="centerX" secondItem="Pih-0w-lge" secondAttribute="centerX" id="Bbq-ME-oyO"/>
+                                            <constraint firstItem="LON-fH-MZ5" firstAttribute="centerX" secondItem="clr-2k-jxc" secondAttribute="centerX" id="CL7-RB-kWK"/>
+                                            <constraint firstItem="n8N-R7-0pv" firstAttribute="height" secondItem="Pih-0w-lge" secondAttribute="height" id="JhL-1a-1K7"/>
+                                            <constraint firstAttribute="topMargin" secondItem="clr-2k-jxc" secondAttribute="top" id="TR1-Yk-mSE"/>
+                                            <constraint firstItem="clr-2k-jxc" firstAttribute="centerX" secondItem="Pih-0w-lge" secondAttribute="centerX" id="Wea-hM-2Es"/>
+                                            <constraint firstItem="LON-fH-MZ5" firstAttribute="top" secondItem="clr-2k-jxc" secondAttribute="bottom" constant="7" id="bgI-hy-zmr"/>
+                                            <constraint firstItem="96T-FC-qfe" firstAttribute="height" secondItem="Pih-0w-lge" secondAttribute="height" id="ooY-Lr-t0f"/>
+                                            <constraint firstItem="n8N-R7-0pv" firstAttribute="centerY" secondItem="Pih-0w-lge" secondAttribute="centerY" id="t2a-Im-DEa"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="backgroundView" destination="n8N-R7-0pv" id="dL2-gR-wvm"/>

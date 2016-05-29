@@ -66,10 +66,23 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             selectedBackground.layer.borderWidth = 3
         }
         
-        if let label = cell.contentView.subviews.first as? UILabel {
-            label.text = token.name
-            label.textColor = UIColor.whiteColor()
-            label.textAlignment = NSTextAlignment.Center
+        for (index, subview) in cell.contentView.subviews.enumerate() {
+            if let label = subview as? UILabel {
+                switch (index) {
+                case 0: //Name
+                    label.text = token.name
+                    label.textColor = UIColor.whiteColor()
+                    label.textAlignment = NSTextAlignment.Center
+                    break
+                case 1: //Role
+                    label.text = token.role.description
+                    label.textColor = UIColor.whiteColor()
+                    label.textAlignment = NSTextAlignment.Center
+                    break
+                default:
+                    print("unknown subview \(index)")
+                }
+            }
         }
         
         return cell
