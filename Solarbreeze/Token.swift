@@ -70,6 +70,12 @@ class Token : MifareClassic {
         }
     }
     
+    var series : Series {
+        get {
+            return model.series
+        }
+    }
+    
     var color : UIColor {
         get {
             return model.color

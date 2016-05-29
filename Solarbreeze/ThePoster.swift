@@ -51,7 +51,7 @@ enum Role : UInt {
                 return "Mini"
             case MagicItem:
                 return "Item"        
-            }        
+            }
         }
     }
 }
@@ -67,7 +67,78 @@ class Model {
     }
     
     var role : Role {
-        return ThePoster.getRole(id)
+        //This is very rough
+        switch(id) {
+        case 0x0...0x20:
+            return .Skylander
+        case 0x64...0x73:
+            return .Skylander
+        case 0xC8...0xCF:
+            return .MagicItem
+        case 0xD0...0xD1:
+            return .MagicItem
+        case 0xD2...0xDC: //Traps
+            return .MagicItem
+        case 0xE6...0xE9:
+            return .MagicItem
+        case 0x12C...0x130: //Adventure packs
+            return .MagicItem
+        case 0x131...0x134: //TT Adventure packs
+            return .MagicItem
+        case 0x194...0x1AE: //Legends
+            return .Skylander
+        case 0x1C2...0x1FE:
+            return .Skylander
+        case 0x3E8...0xC84:
+            return .SWAPForce
+        case 0xC94...0xCA9:
+            return .Vehicle
+        case 0xD48...0xD64:
+            return .SuperCharger
+        case 0xDAC...0xDAF: //Trophies
+            return .MagicItem
+        default:
+            return .None
+        }
+    }
+    
+    var series : Series {
+        switch(id) {
+        case 0x0...0x20:
+            return .SpyrosAdventure
+        case 0x64...0x73:
+            return .Giants
+        case 0xC8...0xCF:
+            return .SpyrosAdventure
+        case 0xD0...0xD1:
+            return .Giants
+        case 0xD2...0xDC: //Traps
+            return .TrapTeam
+        case 0xE6...0xE9:
+            return .TrapTeam
+        case 0x12C...0x130: //Adventure packs
+            return .SpyrosAdventure
+        case 0x131...0x134: //TT Adventure packs
+            return .TrapTeam
+        case 0x194...0x1AE: //Legends
+            return .SpyrosAdventure
+        case 0x1C2...0x1FE:
+            return .TrapTeam
+        case 0x21C...0x21F:
+            return .Giants
+        case 0x3E8...0xC84:
+            return .SwapForce
+        case 0xC94...0xCA9:
+            return .SuperChargers
+        case 0xCE4...0xCE7:
+            return .SwapForce
+        case 0xD48...0xD64:
+            return .SuperChargers
+        case 0xDAC...0xDAF: //Trophies
+            return .SuperChargers
+        default:
+            return .None
+        }
     }
     
     var element : Element {
@@ -112,42 +183,6 @@ class ThePoster {
     
     static func getName(id: UInt) -> String {
         return names.get(id, defaultValue: "<\(id)>")
-    }
-    
-    static func getRole(id: UInt) -> Role {
-        //This is very rough
-        switch(id) {
-        case 0x0...0x20:
-            return .Skylander
-        case 0x64...0x73:
-            return .Skylander
-        case 0xC8...0xCF:
-            return .MagicItem
-        case 0xD0...0xD1:
-            return .MagicItem
-        case 0xD2...0xDC: //Traps
-            return .MagicItem
-        case 0xE6...0xE9:
-            return .MagicItem
-        case 0x12C...0x130: //Adventure packs
-            return .MagicItem
-        case 0x131...0x134: //TT Adventure packs
-            return .MagicItem
-        case 0x194...0x1AE: //Legends
-            return .Skylander
-        case 0x1C2...0x1FE:
-            return .Skylander
-        case 0x3E8...0xC84:
-            return .SWAPForce
-        case 0xC94...0xCA9:
-            return .Vehicle
-        case 0xD48...0xD64:
-            return .SuperCharger
-        case 0xDAC...0xDAF: //Trophies
-            return .MagicItem
-        default:
-            return .None
-        }
     }
     
     static let names : [UInt:String] = [
