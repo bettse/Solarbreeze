@@ -23,6 +23,27 @@ enum Element : UInt {
 
 enum Series : UInt {
     case None, SpyrosAdventure, Giants, SwapForce, TrapTeam, SuperChargers, Sky6
+    var description : String {
+        get {
+            switch(self) {
+            case .None:
+                return "None"
+            case .SpyrosAdventure:
+                return "Spyro's Adventure"
+            case .Giants:
+                return "Giant"
+            case .SwapForce:
+                return "SWAP Force"
+            case .TrapTeam:
+                return "Trap Team"
+            case .SuperChargers:
+                return "SuperChargers"
+            default:
+                return ""
+            }
+        }
+    }
+
 }
 
 //Adventure Packs are categorized as MagicItems.
