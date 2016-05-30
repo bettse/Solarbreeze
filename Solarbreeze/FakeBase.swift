@@ -44,18 +44,18 @@ class FakeBase {
     
     /*
      Status is 16 pairs of bits
-     high bit: token state changed
-     low bit: token present
+     high bit: token update bit
+     low bit: token state bit
      
      00 = no token
      01 = token present
-     10 = token left (present, changing state to not present)
-     11 = token entered (not present, changing state to present)
+     10 = token left (present, update state to not present)
+     11 = token entered (not present, update state to present)
      */
     func placeToken(newToken: Token) {
-        let openIndex = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count        
-        activeTokens[openIndex] = newToken
-        status = status | (0b11 << (2 * UInt32(openIndex)))
+        let index = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count
+        activeTokens[index] = newToken
+        status |= (0b10 << (2 * UInt32(index)))
         sendStatus()
     }
     
@@ -63,7 +63,7 @@ class FakeBase {
         let index = activeTokens.filter{ $0.1.uid == oldToken.uid }.map{ $0.0 }.first
         if let index = index {
             activeTokens.removeValueForKey(index)
-            status = status & ~(0 ^ 0b01 << (2 * UInt32(index)))  //zero out the status bit, and set the update bit
+            status |= (0b10 << (2 * UInt32(index)))
             sendStatus()
         } else {
             print("Tried to remove token that wasn't active")
@@ -78,7 +78,15 @@ class FakeBase {
     }
     
     func sendStatus() {
+        //Status may contain update flags, so only the state flags can be cleared
+        status &= 0xAAAAAAAA
+        activeTokens.forEach { (index, _) in
+            //Set the state bit for all active tokens
+            status |= (0b01 << (2 * UInt32(index)))
+        }
+        
         let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
+        print("sendStatus: \(s)")
         let response : NSData = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
         //Clear update bits
         status = status & 0x55555555 //0x55 = 0b01010101
