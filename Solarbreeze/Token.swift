@@ -252,7 +252,7 @@ class Token : MifareClassic {
         
         
         fileList.sortInPlace({ (a, b) -> Bool in
-            return a.modelId < b.modelId
+            return a.modelId > b.modelId
         })
         return fileList
     }
