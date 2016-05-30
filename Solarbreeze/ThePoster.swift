@@ -170,7 +170,7 @@ class Model {
  
     var color : UIColor {
         switch (self.element) {
-        case .None: return UIColor.whiteColor()
+        case .None: return UIColor.grayColor()
         case .Magic: return UIColor.purpleColor()
         case .Earth: return UIColor.brownColor()
         case .Water: return UIColor.blueColor()

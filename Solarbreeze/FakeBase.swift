@@ -78,10 +78,8 @@ class FakeBase {
     }
     
     func sendStatus() {
-        var response : NSData = NSData()
-        print("\tstatus is 0x\(String(status, radix: HEX))")
         let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
-        response = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
+        let response : NSData = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
         //Clear update bits
         status = status & 0x55555555 //0x55 = 0b01010101
         bleInterface.outgoingReport(response)

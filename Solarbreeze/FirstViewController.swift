@@ -56,35 +56,25 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         let token = library[indexPath.row]
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellView", forIndexPath: indexPath)
         
-        if let background = cell.backgroundView {
-            background.layer.borderColor = token.color.CGColor
-            background.layer.borderWidth = 1
-        }
-        
         if let selectedBackground = cell.selectedBackgroundView {
-            selectedBackground.layer.borderColor = token.color.CGColor
-            selectedBackground.layer.borderWidth = 3
+            selectedBackground.backgroundColor = token.color
         }
         
         for (index, subview) in cell.contentView.subviews.enumerate() {
             if let label = subview as? UILabel {
+                label.textAlignment = NSTextAlignment.Center
                 switch (index) {
                 case 0: //Name
                     label.text = token.name
-                    label.textColor = UIColor.whiteColor()
-                    label.textAlignment = NSTextAlignment.Center
                     break
                 case 1: //Role
                     label.text = token.role.description
-                    label.textColor = UIColor.whiteColor()
-                    label.textAlignment = NSTextAlignment.Center
                     break
                 default:
                     print("unknown subview \(index)")
                 }
             }
-        }
-        
+        }        
         return cell
     }
     
