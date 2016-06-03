@@ -22,7 +22,7 @@ enum Element : UInt {
 }
 
 enum Series : UInt {
-    case None, SpyrosAdventure, Giants, SwapForce, TrapTeam, SuperChargers, Sky6
+    case None, SpyrosAdventure, Giants, SwapForce, TrapTeam, SuperChargers, Imaginators
     var description : String {
         get {
             switch(self) {
