@@ -229,13 +229,10 @@ class Model {
             var d : UInt16 = 0
             switch (series) {
             case .Giants:
-                c = UInt16(Variants.Giants.rawValue)
                 d = 0x10
             case .SwapForce:
-                c = UInt16(Variants.SwapForce.rawValue)
                 d = 0x20
             case .TrapTeam:
-                c = UInt16(Variants.TrapTeam.rawValue)
                 d = 0x30
             case .SuperChargers:
                 d = 0x40
@@ -498,16 +495,16 @@ class ThePoster {
         0xD4E : "Stormblade",
         0xD53 : "Smash It",
         0xD54 : "Spitfire",
-        0xD55 : "Jet-Vac",
-        0xD56 : "Trigger Happy",
-        0xD57 : "Stealth Elf",
-        0xD58 : "Terrafin",
-        0xD59 : "Roller Brawl",
-        0xD5C : "Pop Fizz",
-        0xD5D : "Eruptor",
-        0xD5E : "Gill Grunt",
-        0xD5F : "Donkey Kong",
-        0xD60 : "Bowser",
+        0xD55 : "Hurricane Jet-Vac",
+        0xD56 : "Double Dare Trigger Happy",
+        0xD57 : "Super Shot Stealth Elf",
+        0xD58 : "Shark Shooter Terrafin",
+        0xD59 : "Bone Bash Roller Brawl",
+        0xD5C : "Big Bubble Pop Fizz",
+        0xD5D : "Lava Lance Eruptor",
+        0xD5E : "Deep Dive Gill Grunt",
+        0xD5F : "Turbo Charge Donkey Kong",
+        0xD60 : "Hammer Slam Bowser",
         0xD61 : "Dive-Clops",
         0xD62 : "Astroblast",
         0xD63 : "Nightfall",
