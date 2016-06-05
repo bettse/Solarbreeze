@@ -21,12 +21,6 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         super.viewDidLoad()
         onSwitch.addTarget(self, action: #selector(self.firmwareSwitch), forControlEvents: .ValueChanged)
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        //Reload tokens, but it also clears all selections
-        library = Token.all()
-        libraryView.reloadData()
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
