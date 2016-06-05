@@ -202,10 +202,115 @@ class Model {
     }
     
     var element : Element {
-        return .None
-        //FIXME
-        //return ThePoster.getElement(id)
+        switch(id) {
+        case 0x00...0x03, 0x64, 0x65, 0x1C2...0x1C5:
+            return .Air
+        case 0x04...0x07, 0x66, 0x67, 0x1C6...0x1C9:
+            return .Earth
+        case 0x08...0x0b, 0x68, 0x69, 0x1CA...0x1CD:
+            return .Fire
+        case 0x0c...0x0f, 0x6A, 0x6B, 0x1CE...0x1D1:
+            return .Water
+        case 0x10...0x12, 0x6C, 0x6D, 0x1D2...0x1D5:
+            return .Magic
+        case 0x13...0x16, 0x6E, 0x6F, 0x1D6...0x1D9:
+            return .Tech
+        case 0x17:
+            return .Magic
+        case 0x18...0x1B, 0x70, 0x71, 0x1DA...0x1DD:
+            return .Life
+        case 0x1C:
+            return .Magic
+        case 0x1D...0x20, 0x72, 0x73, 0x1DE...0x1E1:
+            return .Undead
+        //Legend
+        case 0x194:
+            return .Earth
+        case 0x1A0:
+            return .Magic
+        case 0x1A3:
+            return .Tech
+        case 0x1AE:
+            return .Undead
+        case 0x1C2...0x1C5:
+            return .Air
+        case 0x1E2...0x1E3:
+            return .Light
+        case 0x1E4...0x1E5:
+            return .Dark
+        case 0x1F9:
+            return .Earth
+        case 0x1FA:
+            return .Air
+        case 0x1FB:
+            return .Fire
+        case 0x1FC:
+            return .Air
+        case 0x1FD:
+            return .Fire
+        case 0x1FE:
+            return .Tech
+        case 0x202:
+            return .Water
+        case 0x207:
+            return .Tech
+        case 0x20E:
+            return .Life
+        case 0x21C:
+            return .Life
+        case 0x21D:
+            return .Water
+        case 0x21E:
+            return .Magic
+        case 0x21F:
+            return .Undead
+        //XX: Skiping Some
+        //Vehicles
+        case 0xC94: return .Air
+        case 0xC95: return .Undead
+        case 0xC96: return .Water
+        case 0xC97: return .Fire
+        case 0xC98: return .Fire
+        case 0xC99: return .Earth
+        case 0xC9A: return .Earth
+        case 0xC9B: return .Undead
+        case 0xC9C: return .Life
+        case 0xC9F: return .Water
+        case 0xCA0: return .Air
+        case 0xCA1: return .Air
+        case 0xCA2: return .Tech
+        case 0xCA3: return .Tech
+        case 0xCA4: return .Light
+        case 0xCA5: return .Dark
+        case 0xCA6: return .Magic
+        case 0xCA7: return .Magic
+        case 0xCA8: return .Tech
+        case 0xCA9: return .Life
+        //Superchargers
+        case 0xD48: return .Undead
+        case 0xD49: return .Tech
+        case 0xD4A: return .Magic
+        case 0xD4E: return .Air
+        case 0xD53: return .Earth
+        case 0xD54: return .Fire
+        case 0xD55: return .Air
+        case 0xD56: return .Tech
+        case 0xD57: return .Life
+        case 0xD58: return .Earth
+        case 0xD59: return .Undead
+        case 0xD5C: return .Magic
+        case 0xD5D: return .Fire
+        case 0xD5E: return .Water
+        case 0xD5F: return .Life
+        case 0xD60: return .Fire
+        case 0xD61: return .Water
+        case 0xD62: return .Light
+        case 0xD63: return .Dark
+        case 0xD64: return .Life
+        default: return .None
+        }
     }
+
  
     var color : UIColor {
         switch (self.element) {
@@ -225,7 +330,7 @@ class Model {
     
     var symbol : String {
         switch (self.element) {
-        case .None: return "😀"
+        case .None: return " "
         case .Magic: return "✨"
         case .Earth: return "🌎"
         case .Water: return "💧"
