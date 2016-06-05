@@ -17,6 +17,33 @@ import UIKit
  at a list of the figures, their pictures, or stats
  */
 
+enum Variants : UInt8 {
+    case Giants = 0x01
+    case Variant = 0x02
+    case Legendary = 0x03
+    case EventExclusive = 0x04
+    case SwapForce = 0x05
+    case LED = 0x06
+    case TrapTeam = 0x09
+    case Easter = 0x0D
+    case XmasNY = 0x0E
+    case Instant = 0x0F
+    case EonsElite = 0x10
+    case GotD = 0x11
+    case Stone = 0x12
+    case Sparkle = 0x13
+    case SnowPurple = 0x14
+    case Halloween = 0x15
+    case SlimeBimetal = 0x16
+    case MetallicGreen = 0x17
+    case MetallicGreen2 = 0x18
+    case SilverGreen = 0x19
+    case CrystalwRed = 0x1A
+    case CrystalwGreen = 0x1B
+    case CrystalwPurple = 0x1C
+    case Crystal = 0x1D
+}
+
 enum Element : UInt {
     case None, Magic, Earth, Water, Fire, Tech, Undead, Life, Air, Dark, Light
 }
@@ -92,24 +119,36 @@ class Model {
         switch(id) {
         case 0x0...0x20:
             return .Skylander
-        case 0x64...0x73:
+        case 0x64, 0x66, 0x68, 0x6A,
+             0x6C, 0x6E, 0x70, 0x72:
+            return .Giant
+        case 0x64...0x73: //Non-Giants
             return .Skylander
-        case 0xC8...0xCF:
-            return .MagicItem
-        case 0xD0...0xD1:
-            return .MagicItem
-        case 0xD2...0xDC: //Traps
-            return .MagicItem
-        case 0xE6...0xE9:
-            return .MagicItem
-        case 0x12C...0x130: //Adventure packs
-            return .MagicItem
-        case 0x131...0x134: //TT Adventure packs
+        case 0xC8...0xCF,
+             0xD0...0xD1,
+             0xD2...0xDC, //Traps
+             0xE6...0xE9,
+             0x12C...0x130, //Adventure packs
+             0x131...0x134: //TT Adventure packs
             return .MagicItem
         case 0x194...0x1AE: //Legends
             return .Skylander
-        case 0x1C2...0x1FE:
+        //TrapTeam
+        case 0x1C2, 0x1C3, //Air
+             0x1C6, 0x1C7, //Earth
+             0x1CA, 0x1CB, //Fire
+             0x1CE, 0x1CF, //Water
+             0x1D2, 0x1D3, //Magic
+             0x1D6, 0x1D7, //Tech
+             0x1DA, 0x1DB, //Lift
+             0x1DE, 0x1DF, //Undead
+             0x1E2, //Light
+             0x1E4: //Dark
+            return .TrapMaster
+        case 0x1C2...0x1F5:
             return .Skylander
+        case 0x1F6...0x1FE:
+            return .Mini
         case 0x3E8...0xC84:
             return .SWAPForce
         case 0xC94...0xCA9:
@@ -186,27 +225,27 @@ class Model {
     
     var defaultFlags : UInt16 {
         get {
-            switch (role) {
-            case .Skylander, .TrapMaster, .Giant, .SuperCharger, .SWAPForce:
-                switch(series) {
-                    case .Giants:
-                        return 0x0110
-                    case .SwapForce:
-                        return 0x0520
-                    case .TrapTeam:
-                        return 0x0930
-                    case .SuperChargers:
-                        return 0x0040
-                    default: //Spyro's advenstures, etc
-                        return 0x0000
-                }
-            case .Vehicle:
-                return 0x0040
-            default: //Needs to handle traps later
-                return 0x0000
+            var c : UInt16 = 0
+            var d : UInt16 = 0
+            switch (series) {
+            case .Giants:
+                c = UInt16(Variants.Giants.rawValue)
+                d = 0x10
+            case .SwapForce:
+                c = UInt16(Variants.SwapForce.rawValue)
+                d = 0x20
+            case .TrapTeam:
+                c = UInt16(Variants.TrapTeam.rawValue)
+                d = 0x30
+            case .SuperChargers:
+                d = 0x40
+            default:
+                c = 0
+                d = 0
             }
             
-            
+            //D is shifted up because of endian
+            return (d << 8) | c
         }
     }
     
