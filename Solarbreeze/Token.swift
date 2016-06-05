@@ -91,6 +91,12 @@ class Token : MifareClassic {
         }
     }
     
+    var symbol : String {
+        get {
+            return model.symbol
+        }
+    }
+    
     var sequenceA : UInt8 {
         get {
             return block(0x08).subdataWithRange(NSMakeRange(9, 1)).uint8

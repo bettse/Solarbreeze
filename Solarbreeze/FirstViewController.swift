@@ -59,7 +59,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 label.textAlignment = NSTextAlignment.Center
                 switch (index) {
                 case 0: //Name
-                    label.text = token.name
+                    label.text = "\(token.symbol)\(token.name)\(token.symbol)"
                     break
                 case 1: //Role
                     label.text = token.role.description

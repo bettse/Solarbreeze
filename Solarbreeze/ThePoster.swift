@@ -223,6 +223,22 @@ class Model {
         }
     }
     
+    var symbol : String {
+        switch (self.element) {
+        case .None: return "😀"
+        case .Magic: return "✨"
+        case .Earth: return "🌎"
+        case .Water: return "💧"
+        case .Fire: return "🔥"
+        case .Tech: return "⚙️"
+        case .Undead: return "💀"
+        case .Life: return "🎄"
+        case .Air: return "🌀"
+        case .Dark: return "🌑"
+        case .Light: return "☀️"
+        }
+    }
+    
     var defaultFlags : UInt16 {
         get {
             var c : UInt16 = 0
