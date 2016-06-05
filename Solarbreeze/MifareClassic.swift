@@ -28,8 +28,11 @@ class MifareClassic : Hashable, CustomStringConvertible {
     static let blockSize : Int = 0x10
     static let tokenSize : Int = blockSize * blockCount
     
-    let sector_trailor = NSData(bytes: [0, 0, 0, 0, 0, 0, 0x77, 0x87, 0x88, 0, 0, 0, 0, 0, 0, 0] as [UInt8], length: MifareClassic.blockSize)
-    let emptyBlock = NSData(bytes:[UInt8](count: Int(MifareClassic.blockSize), repeatedValue: 0), length: Int(MifareClassic.blockSize))
+    static let rw_sector = NSData(fromHex: "00 00 00 00 00 00 7F 0F 08 69 ff ff ff ff ff ff")
+    static let ro_sector = NSData(fromHex: "00 00 00 00 00 00 0F 0F 0F 69 ff ff ff ff ff ff")
+    static let emptyBlock = NSData(fromHex: "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
+    
+    //let sector_trailor = NSData(bytes: [0, 0, 0, 0, 0, 0, 0x77, 0x87, 0x88, 0, 0, 0, 0, 0, 0, 0] as [UInt8], length: MifareClassic.blockSize)
     
     var nfcType : NfcType = .MifareClassic1K
     var uid : NSData

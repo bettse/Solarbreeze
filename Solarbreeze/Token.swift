@@ -123,7 +123,7 @@ class Token : MifareClassic {
             print("blockData must be exactly \(MifareClassic.blockSize) bytes")
             return true
         }
-        return (blockNumber < 8 || sectorTrailer(blockNumber) || blockData.isEqualToData(emptyBlock))
+        return (blockNumber < 8 || sectorTrailer(blockNumber) || blockData.isEqualToData(MifareClassic.emptyBlock))
     }
     
     func keyForBlock(blockNumber: Int) -> NSData {
@@ -141,7 +141,14 @@ class Token : MifareClassic {
     }
     
     override func block(blockNumber: Int) -> NSData {
-        return decrypt(blockNumber, blockData: super.block(blockNumber))
+        //Guard against invalid sector trailers
+        if (blockNumber == 3) {
+            return MifareClassic.ro_sector
+        } else if (blockNumber % 4 == 3) {
+            return MifareClassic.rw_sector
+        } else {
+            return decrypt(blockNumber, blockData: super.block(blockNumber))
+        }
     }
     
     func updateCrc() {
@@ -209,18 +216,14 @@ class Token : MifareClassic {
         var random = arc4random()
         let uid = NSData(bytes: &random, length: sizeof(UInt32))
         let token = Token(uid: uid)
-        
-        let zeros = NSData(fromHex: "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
-        let ro = NSData(fromHex: "00 00 00 00 00 00 0F 0F 0F 69 00 00 00 00 00 00")
-        let rw = NSData(fromHex: "00 00 00 00 00 00 7F 0F 08 69 00 00 00 00 00 00")
 
         (1..<MifareClassic.blockCount).forEach { (blockNumber) in
             if (blockNumber == 3) {
-                token.load(blockNumber, blockData: ro)
+                token.load(blockNumber, blockData: ro_sector)
             } else if (blockNumber % 4 == 3) {
-                token.load(blockNumber, blockData: rw)
+                token.load(blockNumber, blockData: rw_sector)
             } else {
-                token.load(blockNumber, blockData: zeros)
+                token.load(blockNumber, blockData: emptyBlock)
             }
         }
         
