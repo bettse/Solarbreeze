@@ -50,8 +50,12 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         let token = library[indexPath.row]
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellView", forIndexPath: indexPath)
         
+        if let background = cell.backgroundView {
+            background.backgroundColor = token.color.colorWithAlphaComponent(0.25)
+        }
+        
         if let selectedBackground = cell.selectedBackgroundView {
-            selectedBackground.backgroundColor = token.color
+            selectedBackground.backgroundColor = token.color.colorWithAlphaComponent(0.80)
         }
         
         for (index, subview) in cell.contentView.subviews.enumerate() {
@@ -79,6 +83,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let token = library[indexPath.row]
+        print("\(token) selected")
         fakeBase.placeToken(token)
     }
 }
