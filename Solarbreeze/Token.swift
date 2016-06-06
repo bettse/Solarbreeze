@@ -137,7 +137,7 @@ class Token : MifareClassic {
     }
     
     func keyForBlock(blockNumber: UInt8) -> NSData {
-        let suffix : String = "Pbclevtug (P) 2010 Npgvivfvba. Nyy Evtugf Erfreirq. "
+        let suffix : String = " Pbclevtug (P) 2010 Npgvivfvba. Nyy Evtugf Erfreirq. "
         let preKey = NSMutableData()
         preKey.appendData(block(0))
         preKey.appendData(block(1))
