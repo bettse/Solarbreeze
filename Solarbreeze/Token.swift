@@ -99,13 +99,13 @@ class Token : MifareClassic {
     
     var sequenceA : UInt8 {
         get {
-            return block(0x08).subdataWithRange(NSMakeRange(9, 1)).uint8
+            return decryptedBlock(0x08)[9]
         }
     }
     
     var sequenceB : UInt8 {
         get {
-            return block(0x24).subdataWithRange(NSMakeRange(9, 1)).uint8
+            return decryptedBlock(0x24)[9]
         }
     }
     
@@ -121,7 +121,22 @@ class Token : MifareClassic {
     }
 
     func primaryData(offset: Int) -> NSData {
-        return block(primaryAreaNumber + offset)
+        return decryptedBlock(primaryAreaNumber + offset)
+    }
+    
+    func decryptedBlock(blockNumber: Int) -> NSData {
+        return decrypt(blockNumber, blockData: block(blockNumber))
+    }
+    
+    //Never return keys in sector trailor
+    override func block(blockNumber: Int) -> NSData {
+        if (blockNumber == 3) {
+            return MifareClassic.ro_sector
+        } else if (blockNumber % 4 == 3) {
+            return MifareClassic.rw_sector
+        } else {
+            return super.block(blockNumber)
+        }
     }
     
     func skipEncryption(blockNumber: Int, blockData: NSData) -> Bool {
@@ -144,17 +159,6 @@ class Token : MifareClassic {
         preKey.appendByte(blockNumber)
         preKey.appendData(suffix.rot13.dataUsingEncoding(NSUTF8StringEncoding)!)
         return NSData(data: preKey).md5()
-    }
-    
-    override func block(blockNumber: Int) -> NSData {
-        //Guard against invalid sector trailers
-        if (blockNumber == 3) {
-            return MifareClassic.ro_sector
-        } else if (blockNumber % 4 == 3) {
-            return MifareClassic.rw_sector
-        } else {
-            return decrypt(blockNumber, blockData: super.block(blockNumber))
-        }
     }
     
     func updateCrc() {
