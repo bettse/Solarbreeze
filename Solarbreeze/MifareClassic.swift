@@ -51,12 +51,8 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     init(uid: NSData) {
         self.uid = uid
-        if (self.data.length > 3) { //Replace bytes
-            self.data.replaceBytesInRange(NSMakeRange(0, 4), withBytes: uid.bytes)
-        } else { //Add bytes
-            self.data.appendData(uid)
-            self.data.appendData(NSData(bytes: [UInt8](count: max(0, MifareClassic.blockSize - self.data.length), repeatedValue:0)))
-        }
+        self.data = NSMutableData(capacity: MifareClassic.tokenSize)!
+        self.data.replaceBytesInRange(NSMakeRange(0, 4), withBytes: uid.bytes)
     }
     
     
@@ -65,14 +61,6 @@ class MifareClassic : Hashable, CustomStringConvertible {
         get {
             return uid.hashValue
         }
-    }
-    
-    func nextBlock() -> Int {
-        return data.length / MifareClassic.blockSize
-    }
-    
-    func complete() -> Bool{
-        return (nextBlock() == MifareClassic.blockCount)
     }
     
     func block(blockNumber: UInt8) -> NSData {
@@ -86,13 +74,8 @@ class MifareClassic : Hashable, CustomStringConvertible {
     }
     
     func load(blockNumber: Int, blockData: NSData) {
-        if (blockNumber == nextBlock()) {
-            data.appendData(blockData)
-        } else {
-            let blockRange = NSMakeRange(blockNumber * MifareClassic.blockSize, MifareClassic.blockSize)
-            data.replaceBytesInRange(blockRange, withBytes: blockData.bytes)
-        }
-        
+        let blockRange = NSMakeRange(blockNumber * MifareClassic.blockSize, MifareClassic.blockSize)
+        data.replaceBytesInRange(blockRange, withBytes: blockData.bytes)
     }
     
     func load(blockNumber: UInt8, blockData: NSData) {
