@@ -85,8 +85,7 @@ class FakeBase {
             status |= (0b01 << (2 * UInt32(index)))
         }
         
-        let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible
-        print("sendStatus: \(s)")
+        let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible        
         let response : NSData = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
         //Clear update bits
         status = status & 0x55555555 //0x55 = 0b01010101
@@ -95,7 +94,7 @@ class FakeBase {
     
     func incomingReport(report: NSData) {
         var response : NSData = NSData()
-        print("Command \(Character(UnicodeScalar(report[0])))")
+        //print("Command \(Character(UnicodeScalar(report[0])))")
 
         switch(report[0]){
         case "A".asciiValue:
@@ -110,15 +109,17 @@ class FakeBase {
             let temp = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3).mutableCopy()
             let index = Int(report[1] & 0x0f)
             let blockNumber = report[2]
-            if let token = activeTokens[index] {
-                let mf = token as MifareClassic //Read blocks encrypted
-                temp.appendData(mf.block(blockNumber))
+            if let token = activeTokens[index] {                
+                let blockData = token.block(blockNumber)
+                temp.appendData(blockData)
+                print("Q #\(index) b\(blockNumber): \(blockData)")
+            } else {
+                print("Q Error: no token at #\(index)")
             }
-            print("\tresponse \(temp    )")
             response = temp as! NSData
             break
         case "R".asciiValue:
-            print("\tparameters: \(report)")
+            //print("\tparameters: \(report)")
             response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
             break
         case "S".asciiValue:
@@ -127,9 +128,13 @@ class FakeBase {
         case "W".asciiValue:
             let index = Int(report[1] & 0x0f)
             let blockNumber = report[2]
+            let blockData = report.subdataWithRange(NSMakeRange(3, MifareClassic.blockSize))
             if let token = activeTokens[index] {
-                token.load(blockNumber, blockData: report.subdataWithRange(NSMakeRange(3, MifareClassic.blockSize)))
+                token.load(blockNumber, blockData: blockData)
+                print("W #\(index) b\(blockNumber): \(blockData)")
                 token.dump(appDelegate.applicationDocumentsDirectory)
+            } else {
+                print("W error: No token at \(index)")
             }
             response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
             break
