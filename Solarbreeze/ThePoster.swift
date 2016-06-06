@@ -149,6 +149,8 @@ class Model {
             return .Skylander
         case 0x1F6...0x1FE:
             return .Mini
+        case 0x202...0x21F:
+            return .Mini
         case 0x3E8...0xC84:
             return .SWAPForce
         case 0xC94...0xCA9:
