@@ -86,5 +86,33 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         print("\(token) selected")
         fakeBase.placeToken(token)
     }
+    
+    
+    func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        return true
+    }
+    
+    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+        let token = library[indexPath.row]
+        switch(action.description) {
+        case "cut:":
+            print("Delete")
+        case "copy:":
+            if token is SkylanderToken {
+                let st = (token as! SkylanderToken)
+                st.gold += 1000
+                //Not saved to disk...could be good, coult be bad
+                print("Gold: \(st.gold)")
+            }
+        case "paste:":
+            print("Add XP")
+        default:
+            break
+        }
+    }
 }
 
