@@ -161,13 +161,28 @@ class Token : MifareClassic {
         return NSData(data: preKey).md5()
     }
     
-    func updateCrc() {
-        let block1 = block(1).subdataWithRange(NSMakeRange(0, 14)).mutableCopy()
-        let special = NSMutableData()
-        special.appendData(block(0))
-        special.appendData(block1 as! NSData)
-        block1.appendData(special.crcCCITT)
-        load(1, blockData: block1 as! NSData)
+    func updateCrc(index : Int = 0) {
+        let input = NSMutableData()
+        switch (index) {
+        case 0:
+            let block1 = block(1).subdataWithRange(NSMakeRange(0, 14)).mutableCopy()
+            input.appendData(block(0))
+            input.appendData(block1 as! NSData)
+            block1.appendData(input.crcCCITT)
+            load(1, blockData: block1 as! NSData)
+        case 1:
+            let primary0 = primaryData(0).subdataWithRange(NSMakeRange(0, 14)).mutableCopy()
+            input.appendData(primary0 as! NSData)
+            input.appendByte(5)
+            input.appendByte(0)
+            
+            primary0.appendData(input.crcCCITT)
+            //print("primary0 = \(primary0) vs \(primaryData(0))")
+            //print("encrypted primary0 = \(encrypt(primaryAreaNumber, blockData: primary0 as! NSData)) vs \(block(primaryAreaNumber))")
+            load(primaryAreaNumber, blockData: encrypt(primaryAreaNumber, blockData: primary0 as! NSData))
+        default:
+            print("CRC Index \(index) is not supported")
+        }
     }
     
     func decrypt(blockNumber: Int, blockData: NSData) -> NSData {
