@@ -11,6 +11,7 @@ import UIKit
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var onSwitch: UISwitch!
     @IBOutlet weak var libraryView : UICollectionView!
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
     let fakeBase = FakeBase.singleton
     var library : [Token] = {
@@ -109,7 +110,11 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 print("Gold: \(st.gold)")
             }
         case "paste:":
-            print("Add XP")
+            print("Save clear")
+            let contents = NSMutableData(capacity: MifareClassic.tokenSize)!
+            for i in 0..<MifareClassic.blockCount { contents.appendData(token.decryptedBlock(i)) }
+            let filename = "\(token.name)-unencrypted-\(NSDate()).bin"
+            contents.writeToURL(appDelegate.applicationDocumentsDirectory.URLByAppendingPathComponent(filename), atomically: true)
         default:
             break
         }
