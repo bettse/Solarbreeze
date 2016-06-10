@@ -72,10 +72,6 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
         }
     }
     
-    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
-        print("peripheralManagerDidStartAdvertising \(peripheral) [\(error)]")
-    }
-    
     func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didSubscribeToCharacteristic characteristic: CBCharacteristic) {
         print("didSubscribeToCharacteristic \(characteristic.UUID)")
         if (characteristic.UUID == readCharacteristic.UUID) {
@@ -88,14 +84,6 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     
     func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic) {
         print("didUnsubscribeFromCharacteristic \(characteristic.UUID)")
-    }
-    
-    func peripheralManager(peripheral: CBPeripheralManager, didAddService service: CBService, error: NSError?) {
-        //print("didAddService")
-    }
-    
-    func peripheralManager(peripheral: CBPeripheralManager, didReceiveReadRequest request: CBATTRequest) {
-        print("didReceiveReadRequest: \(request)")
     }
     
     func peripheralManager(peripheral: CBPeripheralManager, didReceiveWriteRequests requests: [CBATTRequest]) {
@@ -121,13 +109,5 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
         } else {
             print("Attempted to send report when peripheralManager was not defined")
         }
-    }
-    
-    func peripheralManager(peripheral: CBPeripheralManager, willRestoreState dict: [String : AnyObject]) {
-        print("willRestoreState")
-    }
-    
-    func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
-        print("peripheralManagerIsReadyToUpdateSubscribers")
     }
 }
