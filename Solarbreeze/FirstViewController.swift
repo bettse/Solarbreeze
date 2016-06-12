@@ -64,10 +64,10 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 label.textAlignment = NSTextAlignment.Center
                 switch (index) {
                 case 0: //Name
-                    label.text = "\(token.symbol)\(token.name)\(token.symbol)"
+                    label.text = token.name
                     break
                 case 1: //Role
-                    label.text = token.role.description
+                    label.text = "\(token.symbol) \(token.role.description)"
                     break
                 default:
                     print("unknown subview \(index)")
@@ -106,15 +106,15 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             if token is SkylanderToken {
                 let st = (token as! SkylanderToken)
                 st.gold += 1000
-                //Not saved to disk...could be good, coult be bad
+                //Not saved to disk, requires loading the character to save the values
                 print("Gold: \(st.gold)")
             }
         case "paste:":
-            print("Save clear")
             let contents = NSMutableData(capacity: MifareClassic.tokenSize)!
             for i in 0..<MifareClassic.blockCount { contents.appendData(token.decryptedBlock(i)) }
-            let filename = "\(token.name)-unencrypted-\(NSDate()).bin"
+            let filename = "\(token.name)-unencrypted-\(NSDate()).bak"
             contents.writeToURL(appDelegate.applicationDocumentsDirectory.URLByAppendingPathComponent(filename), atomically: true)
+            print("Saved \(filename)")
         default:
             break
         }
