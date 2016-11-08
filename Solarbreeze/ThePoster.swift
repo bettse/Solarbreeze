@@ -18,52 +18,52 @@ import UIKit
  */
 
 enum Variants : UInt8 {
-    case Giants = 0x01
-    case Variant = 0x02
-    case Legendary = 0x03
-    case EventExclusive = 0x04
-    case SwapForce = 0x05
-    case LED = 0x06
-    case TrapTeam = 0x09
-    case Easter = 0x0D
-    case XmasNY = 0x0E
-    case Instant = 0x0F
-    case EonsElite = 0x10
-    case GotD = 0x11
-    case Stone = 0x12
-    case Sparkle = 0x13
-    case SnowPurple = 0x14
-    case Halloween = 0x15
-    case SlimeBimetal = 0x16
-    case MetallicGreen = 0x17
-    case MetallicGreen2 = 0x18
-    case SilverGreen = 0x19
-    case CrystalwRed = 0x1A
-    case CrystalwGreen = 0x1B
-    case CrystalwPurple = 0x1C
-    case Crystal = 0x1D
+    case giants = 0x01
+    case variant = 0x02
+    case legendary = 0x03
+    case eventExclusive = 0x04
+    case swapForce = 0x05
+    case led = 0x06
+    case trapTeam = 0x09
+    case easter = 0x0D
+    case xmasNY = 0x0E
+    case instant = 0x0F
+    case eonsElite = 0x10
+    case gotD = 0x11
+    case stone = 0x12
+    case sparkle = 0x13
+    case snowPurple = 0x14
+    case halloween = 0x15
+    case slimeBimetal = 0x16
+    case metallicGreen = 0x17
+    case metallicGreen2 = 0x18
+    case silverGreen = 0x19
+    case crystalwRed = 0x1A
+    case crystalwGreen = 0x1B
+    case crystalwPurple = 0x1C
+    case crystal = 0x1D
 }
 
 enum Element : UInt {
-    case None, Magic, Earth, Water, Fire, Tech, Undead, Life, Air, Dark, Light
+    case none, magic, earth, water, fire, tech, undead, life, air, dark, light
 }
 
 enum Series : UInt {
-    case None, SpyrosAdventure, Giants, SwapForce, TrapTeam, SuperChargers, Imaginators
+    case none, spyrosAdventure, giants, swapForce, trapTeam, superChargers, imaginators
     var description : String {
         get {
             switch(self) {
-            case .None:
+            case .none:
                 return "None"
-            case .SpyrosAdventure:
+            case .spyrosAdventure:
                 return "Spyro's Adventure"
-            case .Giants:
+            case .giants:
                 return "Giant"
-            case .SwapForce:
+            case .swapForce:
                 return "SWAP Force"
-            case .TrapTeam:
+            case .trapTeam:
                 return "Trap Team"
-            case .SuperChargers:
+            case .superChargers:
                 return "SuperChargers"
             default:
                 return ""
@@ -75,29 +75,29 @@ enum Series : UInt {
 
 //Adventure Packs are categorized as MagicItems.
 enum Role : UInt {
-    case None, Skylander, Giant, SWAPForce, TrapMaster, SuperCharger, Vehicle, Sidekick, Mini, MagicItem
+    case none, skylander, giant, swapForce, trapMaster, superCharger, vehicle, sidekick, mini, magicItem
     var description : String {
         get {
             switch(self) {
-            case None:
+            case .none:
                 return "None"
-            case Skylander:
+            case .skylander:
                 return "Skylander"
-            case Giant:
+            case .giant:
                 return "Giant"
-            case SWAPForce:
+            case .swapForce:
                 return "SWAP Force"
-            case TrapMaster:
+            case .trapMaster:
                 return "Trap Master"
-            case SuperCharger:
+            case .superCharger:
                 return "SuperCharger"
-            case Vehicle:
+            case .vehicle:
                 return "Vehicle"
-            case Sidekick:
+            case .sidekick:
                 return "Sidekick"
-            case Mini:
+            case .mini:
                 return "Mini"
-            case MagicItem:
+            case .magicItem:
                 return "Item"        
             }
         }
@@ -118,21 +118,21 @@ class Model {
         //This is very rough
         switch(id) {
         case 0x0...0x20:
-            return .Skylander
+            return .skylander
         case 0x64, 0x66, 0x68, 0x6A,
              0x6C, 0x6E, 0x70, 0x72:
-            return .Giant
+            return .giant
         case 0x64...0x73: //Non-Giants
-            return .Skylander
+            return .skylander
         case 0xC8...0xCF,
              0xD0...0xD1,
              0xD2...0xDC, //Traps
              0xE6...0xE9,
              0x12C...0x130, //Adventure packs
              0x131...0x134: //TT Adventure packs
-            return .MagicItem
+            return .magicItem
         case 0x194...0x1AE: //Legends
-            return .Skylander
+            return .skylander
         //TrapTeam
         case 0x1C2, 0x1C3, //Air
              0x1C6, 0x1C7, //Earth
@@ -144,205 +144,205 @@ class Model {
              0x1DE, 0x1DF, //Undead
              0x1E2, //Light
              0x1E4: //Dark
-            return .TrapMaster
+            return .trapMaster
         case 0x1C2...0x1F5:
-            return .Skylander
+            return .skylander
         case 0x1F6...0x1FE:
-            return .Mini
+            return .mini
         case 0x202...0x21F:
-            return .Mini
+            return .mini
         case 0x3E8...0xC84:
-            return .SWAPForce
+            return .swapForce
         case 0xC94...0xCA9:
-            return .Vehicle
+            return .vehicle
         case 0xD48...0xD64:
-            return .SuperCharger
+            return .superCharger
         case 0xDAC...0xDAF: //Trophies
-            return .MagicItem
+            return .magicItem
         default:
-            return .None
+            return .none
         }
     }
     
     var series : Series {
         switch(id) {
         case 0x0...0x20:
-            return .SpyrosAdventure
+            return .spyrosAdventure
         case 0x64...0x73:
-            return .Giants
+            return .giants
         case 0xC8...0xCF:
-            return .SpyrosAdventure
+            return .spyrosAdventure
         case 0xD0...0xD1:
-            return .Giants
+            return .giants
         case 0xD2...0xDC: //Traps
-            return .TrapTeam
+            return .trapTeam
         case 0xE6...0xE9:
-            return .TrapTeam
+            return .trapTeam
         case 0x12C...0x130: //Adventure packs
-            return .SpyrosAdventure
+            return .spyrosAdventure
         case 0x131...0x134: //TT Adventure packs
-            return .TrapTeam
+            return .trapTeam
         case 0x194...0x1AE: //Legends
-            return .SpyrosAdventure
+            return .spyrosAdventure
         case 0x1C2...0x1FE:
-            return .TrapTeam
+            return .trapTeam
         case 0x21C...0x21F:
-            return .Giants
+            return .giants
         case 0x3E8...0xC84:
-            return .SwapForce
+            return .swapForce
         case 0xC94...0xCA9:
-            return .SuperChargers
+            return .superChargers
         case 0xCE4...0xCE7:
-            return .SwapForce
+            return .swapForce
         case 0xD48...0xD64:
-            return .SuperChargers
+            return .superChargers
         case 0xDAC...0xDAF: //Trophies
-            return .SuperChargers
+            return .superChargers
         default:
-            return .None
+            return .none
         }
     }
     
     var element : Element {
         switch(id) {
         case 0x00...0x03, 0x64, 0x65, 0x1C2...0x1C5:
-            return .Air
+            return .air
         case 0x04...0x07, 0x66, 0x67, 0x1C6...0x1C9:
-            return .Earth
+            return .earth
         case 0x08...0x0b, 0x68, 0x69, 0x1CA...0x1CD:
-            return .Fire
+            return .fire
         case 0x0c...0x0f, 0x6A, 0x6B, 0x1CE...0x1D1:
-            return .Water
+            return .water
         case 0x10...0x12, 0x6C, 0x6D, 0x1D2...0x1D5:
-            return .Magic
+            return .magic
         case 0x13...0x16, 0x6E, 0x6F, 0x1D6...0x1D9:
-            return .Tech
+            return .tech
         case 0x17:
-            return .Magic
+            return .magic
         case 0x18...0x1B, 0x70, 0x71, 0x1DA...0x1DD:
-            return .Life
+            return .life
         case 0x1C:
-            return .Magic
+            return .magic
         case 0x1D...0x20, 0x72, 0x73, 0x1DE...0x1E1:
-            return .Undead
+            return .undead
         //Legend
         case 0x194:
-            return .Earth
+            return .earth
         case 0x1A0:
-            return .Magic
+            return .magic
         case 0x1A3:
-            return .Tech
+            return .tech
         case 0x1AE:
-            return .Undead
+            return .undead
         case 0x1C2...0x1C5:
-            return .Air
+            return .air
         case 0x1E2...0x1E3:
-            return .Light
+            return .light
         case 0x1E4...0x1E5:
-            return .Dark
+            return .dark
         case 0x1F9:
-            return .Earth
+            return .earth
         case 0x1FA:
-            return .Air
+            return .air
         case 0x1FB:
-            return .Fire
+            return .fire
         case 0x1FC:
-            return .Air
+            return .air
         case 0x1FD:
-            return .Fire
+            return .fire
         case 0x1FE:
-            return .Tech
+            return .tech
         case 0x202:
-            return .Water
+            return .water
         case 0x207:
-            return .Tech
+            return .tech
         case 0x20E:
-            return .Life
+            return .life
         case 0x21C:
-            return .Life
+            return .life
         case 0x21D:
-            return .Water
+            return .water
         case 0x21E:
-            return .Magic
+            return .magic
         case 0x21F:
-            return .Undead
+            return .undead
         //XX: Skiping Some
         //Vehicles
-        case 0xC94: return .Air
-        case 0xC95: return .Undead
-        case 0xC96: return .Water
-        case 0xC97: return .Fire
-        case 0xC98: return .Fire
-        case 0xC99: return .Earth
-        case 0xC9A: return .Earth
-        case 0xC9B: return .Undead
-        case 0xC9C: return .Life
-        case 0xC9F: return .Water
-        case 0xCA0: return .Air
-        case 0xCA1: return .Air
-        case 0xCA2: return .Tech
-        case 0xCA3: return .Tech
-        case 0xCA4: return .Light
-        case 0xCA5: return .Dark
-        case 0xCA6: return .Magic
-        case 0xCA7: return .Magic
-        case 0xCA8: return .Tech
-        case 0xCA9: return .Life
+        case 0xC94: return .air
+        case 0xC95: return .undead
+        case 0xC96: return .water
+        case 0xC97: return .fire
+        case 0xC98: return .fire
+        case 0xC99: return .earth
+        case 0xC9A: return .earth
+        case 0xC9B: return .undead
+        case 0xC9C: return .life
+        case 0xC9F: return .water
+        case 0xCA0: return .air
+        case 0xCA1: return .air
+        case 0xCA2: return .tech
+        case 0xCA3: return .tech
+        case 0xCA4: return .light
+        case 0xCA5: return .dark
+        case 0xCA6: return .magic
+        case 0xCA7: return .magic
+        case 0xCA8: return .tech
+        case 0xCA9: return .life
         //Superchargers
-        case 0xD48: return .Undead
-        case 0xD49: return .Tech
-        case 0xD4A: return .Magic
-        case 0xD4E: return .Air
-        case 0xD53: return .Earth
-        case 0xD54: return .Fire
-        case 0xD55: return .Air
-        case 0xD56: return .Tech
-        case 0xD57: return .Life
-        case 0xD58: return .Earth
-        case 0xD59: return .Undead
-        case 0xD5C: return .Magic
-        case 0xD5D: return .Fire
-        case 0xD5E: return .Water
-        case 0xD5F: return .Life
-        case 0xD60: return .Fire
-        case 0xD61: return .Water
-        case 0xD62: return .Light
-        case 0xD63: return .Dark
-        case 0xD64: return .Life
-        default: return .None
+        case 0xD48: return .undead
+        case 0xD49: return .tech
+        case 0xD4A: return .magic
+        case 0xD4E: return .air
+        case 0xD53: return .earth
+        case 0xD54: return .fire
+        case 0xD55: return .air
+        case 0xD56: return .tech
+        case 0xD57: return .life
+        case 0xD58: return .earth
+        case 0xD59: return .undead
+        case 0xD5C: return .magic
+        case 0xD5D: return .fire
+        case 0xD5E: return .water
+        case 0xD5F: return .life
+        case 0xD60: return .fire
+        case 0xD61: return .water
+        case 0xD62: return .light
+        case 0xD63: return .dark
+        case 0xD64: return .life
+        default: return .none
         }
     }
 
  
     var color : UIColor {
         switch (self.element) {
-        case .None: return UIColor.grayColor()
-        case .Magic: return UIColor.purpleColor()
-        case .Earth: return UIColor.brownColor()
-        case .Water: return UIColor.blueColor()
-        case .Fire: return UIColor.redColor()
-        case .Tech: return UIColor.orangeColor()
-        case .Undead: return UIColor.grayColor()
-        case .Life: return UIColor.greenColor()
-        case .Air: return UIColor.cyanColor()
-        case .Dark: return UIColor.blackColor()
-        case .Light: return UIColor.yellowColor()
+        case .none: return UIColor.gray
+        case .magic: return UIColor.purple
+        case .earth: return UIColor.brown
+        case .water: return UIColor.blue
+        case .fire: return UIColor.red
+        case .tech: return UIColor.orange
+        case .undead: return UIColor.gray
+        case .life: return UIColor.green
+        case .air: return UIColor.cyan
+        case .dark: return UIColor.black
+        case .light: return UIColor.yellow
         }
     }
     
     var symbol : String {
         switch (self.element) {
-        case .None: return " "
-        case .Magic: return "✨"
-        case .Earth: return "🌎"
-        case .Water: return "💧"
-        case .Fire: return "🔥"
-        case .Tech: return "⚙️"
-        case .Undead: return "💀"
-        case .Life: return "🎄"
-        case .Air: return "🌀"
-        case .Dark: return "🌑"
-        case .Light: return "☀️"
+        case .none: return " "
+        case .magic: return "✨"
+        case .earth: return "🌎"
+        case .water: return "💧"
+        case .fire: return "🔥"
+        case .tech: return "⚙️"
+        case .undead: return "💀"
+        case .life: return "🎄"
+        case .air: return "🌀"
+        case .dark: return "🌑"
+        case .light: return "☀️"
         }
     }
     
@@ -351,13 +351,13 @@ class Model {
             var c : UInt16 = 0
             var d : UInt16 = 0
             switch (series) {
-            case .Giants:
+            case .giants:
                 d = 0x10
-            case .SwapForce:
+            case .swapForce:
                 d = 0x20
-            case .TrapTeam:
+            case .trapTeam:
                 d = 0x30
-            case .SuperChargers:
+            case .superChargers:
                 d = 0x40
             default:
                 c = 0
@@ -388,10 +388,10 @@ class Model {
 
 class ThePoster {
     static var models : [Model] = {
-        return names.keys.map{return Model(id: $0)}.sort({ $0.id < $1.id })
+        return names.keys.map{return Model(id: $0)}.sorted(by: { $0.id < $1.id })
     }()
     
-    static func getName(id: UInt) -> String {
+    static func getName(_ id: UInt) -> String {
         return names.get(id, defaultValue: "<\(id)>")
     }
     

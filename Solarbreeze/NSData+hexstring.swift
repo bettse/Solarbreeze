@@ -8,15 +8,15 @@
 
 import Foundation
 
-public extension NSData {
-    convenience init(fromHex: String) {
-        let hexArray = fromHex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).componentsSeparatedByString(" ")
+public extension Data {
+    init(fromHex: String) {
+        let hexArray = fromHex.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: " ")
         let hexBytes : [UInt8] = hexArray.map({UInt8($0, radix: 0x10)!})
-        self.init(bytes: hexBytes as [UInt8], length: hexBytes.count)
+        (self as NSData).init(bytes: hexBytes as [UInt8], length: hexBytes.count)
     }
     
     var toHex : String {
-        let s = "\(self)".componentsSeparatedByString(" ").joinWithSeparator("").stringByTrimmingCharactersInSet(NSCharacterSet.init(charactersInString: "< >"))
+        let s = "\(self)".components(separatedBy: " ").joined(separator: "").trimmingCharacters(in: CharacterSet.init(charactersIn: "< >"))
         return s
     }
 }

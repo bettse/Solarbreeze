@@ -9,11 +9,11 @@
 import Foundation
 
 //https://gist.github.com/tannernelson/73d0923efdee50e6c38f
-extension NSData {
+extension Data {
     var uint8: UInt8 {
         get {
             var number: UInt8 = 0
-            self.getBytes(&number, length: sizeof(UInt8))
+            (self as NSData).getBytes(&number, length: MemoryLayout<UInt8>.size)
             return number
         }
     }
@@ -21,7 +21,7 @@ extension NSData {
     var uint16: UInt16 {
         get {
             var number: UInt16 = 0
-            self.getBytes(&number, length: sizeof(UInt16))
+            (self as NSData).getBytes(&number, length: MemoryLayout<UInt16>.size)
             return number
         }
     }
@@ -29,16 +29,16 @@ extension NSData {
     var uint32: UInt32 {
         get {
             var number: UInt32 = 0
-            self.getBytes(&number, length: sizeof(UInt32))
+            (self as NSData).getBytes(&number, length: MemoryLayout<UInt32>.size)
             return number
         }
     }
     
-    var uuid: NSUUID? {
+    var uuid: UUID? {
         get {
-            var bytes = [UInt8](count: self.length, repeatedValue: 0)
-            self.getBytes(&bytes, length: self.length * sizeof(UInt8))
-            return NSUUID(UUIDBytes: bytes)
+            var bytes = [UInt8](repeating: 0, count: self.count)
+            (self as NSData).getBytes(&bytes, length: self.count * MemoryLayout<UInt8>.size)
+            return (NSUUID(uuidBytes: bytes) as UUID)
         }
     }
 }

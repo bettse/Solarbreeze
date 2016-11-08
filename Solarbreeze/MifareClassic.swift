@@ -9,11 +9,11 @@
 import Foundation
 
 enum NfcType : UInt8 {
-    case None = 0
-    case MifareClassic1K = 0x08
-    case MifareMini = 0x09
-    case MifareClassic4K = 0x18
-    case DesFire = 0x20
+    case none = 0
+    case mifareClassic1K = 0x08
+    case mifareMini = 0x09
+    case mifareClassic4K = 0x18
+    case desFire = 0x20
 }
 
 //MARK: - Equatable
@@ -28,14 +28,14 @@ class MifareClassic : Hashable, CustomStringConvertible {
     static let blockSize : Int = 0x10
     static let tokenSize : Int = blockSize * blockCount
     
-    static let rw_sector = NSData(fromHex: "00 00 00 00 00 00 7F 0F 08 69 ff ff ff ff ff ff")
-    static let ro_sector = NSData(fromHex: "00 00 00 00 00 00 0F 0F 0F 69 ff ff ff ff ff ff")
-    static let emptyBlock = NSData(fromHex: "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
+    static let rw_sector = Data(fromHex: "00 00 00 00 00 00 7F 0F 08 69 ff ff ff ff ff ff")
+    static let ro_sector = Data(fromHex: "00 00 00 00 00 00 0F 0F 0F 69 ff ff ff ff ff ff")
+    static let emptyBlock = Data(fromHex: "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
     
     //let sector_trailor = NSData(bytes: [0, 0, 0, 0, 0, 0, 0x77, 0x87, 0x88, 0, 0, 0, 0, 0, 0, 0] as [UInt8], length: MifareClassic.blockSize)
     
-    var nfcType : NfcType = .MifareClassic1K
-    var uid : NSData
+    var nfcType : NfcType = .mifareClassic1K
+    var uid : Data
     var data : NSMutableData = NSMutableData()
     
     var filename : String {
@@ -45,14 +45,14 @@ class MifareClassic : Hashable, CustomStringConvertible {
     }
     
     var description: String {
-        let me = String(self.dynamicType).componentsSeparatedByString(".").last!
+        let me = String(describing: type(of: self)).components(separatedBy: ".").last!
         return "\(me)(\(uid.toHex))"
     }
     
-    init(uid: NSData) {
+    init(uid: Data) {
         self.uid = uid
         self.data = NSMutableData(capacity: MifareClassic.tokenSize)!
-        self.data.replaceBytesInRange(NSMakeRange(0, 4), withBytes: uid.bytes)
+        self.data.replaceBytes(in: NSMakeRange(0, 4), withBytes: (uid as NSData).bytes)
     }
     
     
@@ -63,30 +63,30 @@ class MifareClassic : Hashable, CustomStringConvertible {
         }
     }
     
-    func block(blockNumber: UInt8) -> NSData {
+    func block(_ blockNumber: UInt8) -> Data {
         return block(Int(blockNumber))
     }
     
-    func block(blockNumber: Int) -> NSData {
+    func block(_ blockNumber: Int) -> Data {
         let blockStart = blockNumber * MifareClassic.blockSize
         let blockRange = NSMakeRange(blockStart, MifareClassic.blockSize)
-        return data.subdataWithRange(blockRange)
+        return data.subdata(with: blockRange)
     }
     
-    func load(blockNumber: Int, blockData: NSData) {
+    func load(_ blockNumber: Int, blockData: Data) {
         let blockRange = NSMakeRange(blockNumber * MifareClassic.blockSize, MifareClassic.blockSize)
-        data.replaceBytesInRange(blockRange, withBytes: blockData.bytes)
+        data.replaceBytes(in: blockRange, withBytes: (blockData as NSData).bytes)
     }
     
-    func load(blockNumber: UInt8, blockData: NSData) {
+    func load(_ blockNumber: UInt8, blockData: Data) {
         load(Int(blockNumber), blockData: blockData)
     }
     
-    func sectorTrailer(blockNumber : Int) -> Bool {
+    func sectorTrailer(_ blockNumber : Int) -> Bool {
         return (blockNumber + 1) % 4 == 0
     }
     
-    func dump(path: NSURL) {
-        data.writeToURL(path.URLByAppendingPathComponent(filename), atomically: true)
+    func dump(_ path: URL) {
+        data.write(to: path.appendingPathComponent(filename), atomically: true)
     }
 }

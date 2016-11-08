@@ -9,8 +9,8 @@
 import Foundation
 //http://stackoverflow.com/questions/25734357/swift-nsmutabledata-append-byte
 extension NSMutableData {
-    func appendByte(b: UInt8) {
+    func appendByte(_ b: UInt8) {
         var newByte = b
-        self.appendBytes(&newByte, length: 1)
+        self.append(&newByte, length: 1)
     }
 }

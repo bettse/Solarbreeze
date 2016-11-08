@@ -11,7 +11,7 @@ import Foundation
 //https://gist.github.com/olgakogan/bd6e5eff98aeda63c68c
 extension Dictionary {
     
-    func get(key: Key, defaultValue: Value) -> Value {
+    func get(_ key: Key, defaultValue: Value) -> Value {
         /**
          Returns the value for the given key (if exists), otherwise returns the default value.
          */

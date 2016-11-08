@@ -42,9 +42,9 @@ let crcCCITTLookupTable: [UInt16] = [
     0x2E93, 0x3EB2, 0x0ED1, 0x1EF0,
 ]
 
-func calculateCRCCCITT(seed: UInt16, data: NSData) -> UInt16 {
-    let bytePointer = UnsafePointer<UInt8>(data.bytes)
-    let bytes = UnsafeBufferPointer<UInt8>(start: bytePointer, count: data.length)
+func calculateCRCCCITT(_ seed: UInt16, data: Data) -> UInt16 {
+    let bytePointer = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
+    let bytes = UnsafeBufferPointer<UInt8>(start: bytePointer, count: data.count)
     var sum = seed
     
     for byte in bytes {
@@ -55,10 +55,10 @@ func calculateCRCCCITT(seed: UInt16, data: NSData) -> UInt16 {
     return sum
 }
 
-extension NSData {
-    var crcCCITT : NSData {
+extension Data {
+    var crcCCITT : Data {
         var crc = calculateCRCCCITT(SEED, data: self)
-        return NSData(bytes: &crc, length: sizeof(UInt16))
+        return Data(bytes: UnsafePointer<UInt8>(&crc), count: sizeof(UInt16))
     }
 }
 

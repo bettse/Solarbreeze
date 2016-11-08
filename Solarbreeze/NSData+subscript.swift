@@ -8,12 +8,12 @@
 
 import Foundation
 
-public extension NSData {
+public extension Data {
     subscript(origin: Int) -> UInt8 {
         get {
             var result: UInt8 = 0;
-            if (origin < self.length) {
-                self.getBytes(&result, range: NSMakeRange(origin, sizeof(UInt8)))
+            if (origin < self.count) {
+                (self as NSData).getBytes(&result, range: NSMakeRange(origin, MemoryLayout<UInt8>.size))
             }
             return result;
         }

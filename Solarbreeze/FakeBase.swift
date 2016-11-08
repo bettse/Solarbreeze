@@ -12,16 +12,16 @@ import UIKit
 class FakeBase {
     static let singleton = FakeBase()
     let HEX = 0x10
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let bleInterface = FakeBaseInterface()
     
-    var corrolationGenerator = (1..<UInt8.max-1).generate()
+    var corrolationGenerator = (1..<UInt8.max-1).makeIterator()
     var nextSequence : UInt8 {
         get {
             if let next = corrolationGenerator.next() {
                 return next
             } else {
-                corrolationGenerator = (1..<UInt8.max-1).generate()
+                corrolationGenerator = (1..<UInt8.max-1).makeIterator()
                 return 0
             }
         }
@@ -52,17 +52,17 @@ class FakeBase {
      10 = token left (present, update state to not present)
      11 = token entered (not present, update state to present)
      */
-    func placeToken(newToken: Token) {
+    func placeToken(_ newToken: Token) {
         let index = activeTokens.filter{ $0.1 == nil }.map{ $0.0 }.first ?? activeTokens.count
         activeTokens[index] = newToken
         status |= (0b10 << (2 * UInt32(index)))
         sendStatus()
     }
     
-    func removeToken(oldToken: Token) {
+    func removeToken(_ oldToken: Token) {
         let index = activeTokens.filter{ $0.1.uid == oldToken.uid }.map{ $0.0 }.first
         if let index = index {
-            activeTokens.removeValueForKey(index)
+            activeTokens.removeValue(forKey: index)
             status |= (0b10 << (2 * UInt32(index)))
             sendStatus()
         } else {
@@ -85,43 +85,43 @@ class FakeBase {
             status |= (0b01 << (2 * UInt32(index)))
         }
         
-        let s = NSData(bytes: &status, length: sizeof(UInt32)) //Make bytes more accessible        
-        let response : NSData = NSData(bytes: [0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8], length: 11)
+        let s = Data(bytes: UnsafePointer<UInt8>(&status), count: sizeof(UInt32)) //Make bytes more accessible        
+        let response : Data = Data(bytes: UnsafePointer<UInt8>([0x53/* 'S' */, s[0], s[1], s[2], s[3], nextSequence, 0x01, 0xaa, 0x86, 0x02, 0x19] as [UInt8]), count: 11)
         //Clear update bits
         status = status & 0x55555555 //0x55 = 0b01010101
         print("S \(s)")
         bleInterface.outgoingReport(response)
     }
     
-    func incomingReport(report: NSData) {
-        var response : NSData = NSData()
+    func incomingReport(_ report: Data) {
+        var response : Data = Data()
         //print("Command \(Character(UnicodeScalar(report[0])))")
 
         switch(report[0]){
         case "A".asciiValue:
-            response = NSData(bytes: [report[0], report[1], 0x62, 0x02, 0x19, 0xaa, 0x01, 0x5e, 0x49, 0x53, 0xbb, 0x35, 0xc6] as [UInt8], length: 13)
+            response = Data(bytes: UnsafePointer<UInt8>([report[0], report[1], 0x62, 0x02, 0x19, 0xaa, 0x01, 0x5e, 0x49, 0x53, 0xbb, 0x35, 0xc6] as [UInt8]), count: 13)
             break
         case "J".asciiValue:
-            response = NSData(bytes: [report[0], 0x00, 0x00, 0x00] as [UInt8], length: 4)
+            response = Data(bytes: UnsafePointer<UInt8>([report[0], 0x00, 0x00, 0x00] as [UInt8]), count: 4)
             break
         case "L".asciiValue:
             break
         case "Q".asciiValue:
-            let temp = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3).mutableCopy()
+            let temp = Data(bytes: UnsafePointer<UInt8>([report[0], report[1], report[2]] as [UInt8]), count: 3).mutableCopy()
             let index = Int(report[1] & 0x0f)
             let blockNumber = report[2]
             if let token = activeTokens[index] {                
                 let blockData = token.block(blockNumber)
-                temp.appendData(blockData)
+                temp.append(blockData)
                 print("Q #\(index) b\(blockNumber): \(blockData)")
             } else {
                 print("Q Error: no token at #\(index)")
             }
-            response = temp as! NSData
+            response = temp as! Data
             break
         case "R".asciiValue:
             //print("\tparameters: \(report)")
-            response = NSData(bytes: [report[0], 0x02, 0x19] as [UInt8], length: 3)
+            response = Data(bytes: UnsafePointer<UInt8>([report[0], 0x02, 0x19] as [UInt8]), count: 3)
             break
         case "S".asciiValue:
             sendStatus()
@@ -129,7 +129,7 @@ class FakeBase {
         case "W".asciiValue:
             let index = Int(report[1] & 0x0f)
             let blockNumber = report[2]
-            let blockData = report.subdataWithRange(NSMakeRange(3, MifareClassic.blockSize))
+            let blockData = report.subdata(in: NSMakeRange(3, MifareClassic.blockSize))
             if let token = activeTokens[index] {
                 token.load(blockNumber, blockData: blockData)
                 print("W #\(index) b\(blockNumber): \(blockData)")
@@ -137,13 +137,13 @@ class FakeBase {
             } else {
                 print("W error: No token at \(index)")
             }
-            response = NSData(bytes: [report[0], report[1], report[2]] as [UInt8], length: 3)
+            response = Data(bytes: UnsafePointer<UInt8>([report[0], report[1], report[2]] as [UInt8]), count: 3)
             break
         default:
             print("Unhandled \(report[0])")
         }
         
-        if (response.length > 0) {
+        if (response.count > 0) {
             bleInterface.outgoingReport(response)
         }
     }

@@ -16,10 +16,10 @@ extension String {
         return 0
     }
     var unicodeValue: UInt32 {
-        guard let first = characters.first where characters.count == 1 else  { return 0 }
+        guard let first = characters.first, characters.count == 1 else  { return 0 }
         return first.unicodeScalarsValue
     }
-    func asciiValueAt(pos pos: UInt32) -> UInt32 {
+    func asciiValueAt(pos: UInt32) -> UInt32 {
         guard characters.count > 0 && Int(pos) < characters.count else  { return 0 }
         return Array(characters)[Int(pos)].unicodeScalarsValue
     }

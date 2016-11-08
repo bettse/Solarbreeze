@@ -177,6 +177,7 @@
 					6DC2DDC81CF93465008ECB57 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = H9NLRYZLBM;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -398,6 +399,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ericbetts.Solarbreeze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -410,6 +412,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ericbetts.Solarbreeze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

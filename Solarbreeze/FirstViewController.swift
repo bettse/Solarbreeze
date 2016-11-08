@@ -11,7 +11,7 @@ import UIKit
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var onSwitch: UISwitch!
     @IBOutlet weak var libraryView : UICollectionView!
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     let fakeBase = FakeBase.singleton
     var library : [Token] = {
@@ -20,7 +20,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        onSwitch.addTarget(self, action: #selector(self.firmwareSwitch), forControlEvents: .ValueChanged)
+        onSwitch.addTarget(self, action: #selector(self.firmwareSwitch), for: .valueChanged)
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,8 +30,8 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
 
     func firmwareSwitch() {
         //Disable idle timer when fakebase is on
-        UIApplication.sharedApplication().idleTimerDisabled = onSwitch.on
-        if onSwitch.on {
+        UIApplication.shared.isIdleTimerDisabled = onSwitch.isOn
+        if onSwitch.isOn {
             fakeBase.start()
         } else {            
             fakeBase.stop()
@@ -39,7 +39,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = library.count
         if (count > 0) {
             collectionView.allowsMultipleSelection = true
@@ -47,21 +47,21 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         return count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let token = library[indexPath.row]
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellView", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellView", for: indexPath)
         
         if let background = cell.backgroundView {
-            background.backgroundColor = token.color.colorWithAlphaComponent(0.25)
+            background.backgroundColor = token.color.withAlphaComponent(0.25)
         }
         
         if let selectedBackground = cell.selectedBackgroundView {
-            selectedBackground.backgroundColor = token.color.colorWithAlphaComponent(0.80)
+            selectedBackground.backgroundColor = token.color.withAlphaComponent(0.80)
         }
         
-        for (index, subview) in cell.contentView.subviews.enumerate() {
+        for (index, subview) in cell.contentView.subviews.enumerated() {
             if let label = subview as? UILabel {
-                label.textAlignment = NSTextAlignment.Center
+                label.textAlignment = NSTextAlignment.center
                 switch (index) {
                 case 0: //Name
                     label.text = token.name
@@ -77,27 +77,27 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let token = library[indexPath.row]
         fakeBase.removeToken(token)
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let token = library[indexPath.row]
         print("\(token) selected")
         fakeBase.placeToken(token)
     }
     
     
-    func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         return true
     }
     
-    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
         let token = library[indexPath.row]
         switch(action.description) {
         case "cut:":
@@ -111,9 +111,9 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             }
         case "paste:":
             let contents = NSMutableData(capacity: MifareClassic.tokenSize)!
-            for i in 0..<MifareClassic.blockCount { contents.appendData(token.decryptedBlock(i)) }
-            let filename = "\(token.name)-unencrypted-\(NSDate()).bak"
-            contents.writeToURL(appDelegate.applicationDocumentsDirectory.URLByAppendingPathComponent(filename), atomically: true)
+            for i in 0..<MifareClassic.blockCount { contents.append(token.decryptedBlock(i)) }
+            let filename = "\(token.name)-unencrypted-\(Date()).bak"
+            contents.write(to: appDelegate.applicationDocumentsDirectory.appendingPathComponent(filename)!, atomically: true)
             print("Saved \(filename)")
         default:
             break
