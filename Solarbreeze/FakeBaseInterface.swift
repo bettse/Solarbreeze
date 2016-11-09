@@ -55,7 +55,6 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
             peripheral.add(service!)
             peripheral.startAdvertising(
                 [
-                    CBAdvertisementDataIsConnectable: true,
                     CBAdvertisementDataSolicitedServiceUUIDsKey: [FakeBaseInterface.service_uuid],
                     CBAdvertisementDataServiceUUIDsKey: [FakeBaseInterface.short_service_uuid],
                     CBAdvertisementDataLocalNameKey: "Skylanders Portal\0"

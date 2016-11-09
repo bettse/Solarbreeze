@@ -271,10 +271,12 @@ class Token : MifareClassic {
         
         if let files = files {
             for file in files {
-                if ((file as AnyObject).absoluteString??.hasSuffix("bin"))! { // checks the extension
-                    if let image = try? Data(contentsOf: file as! URL) {
-                        if (image.count == MifareClassic.tokenSize) {
-                            fileList.append(Token.factory(image))
+                if let file = file as? URL {
+                    if (file.absoluteString.hasSuffix("bin")) {
+                        if let image = try? Data(contentsOf: file) {
+                            if (image.count == MifareClassic.tokenSize) {
+                                fileList.append(Token.factory(image))
+                            }
                         }
                     }
                 }

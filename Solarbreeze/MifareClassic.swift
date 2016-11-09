@@ -36,7 +36,7 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     var nfcType : NfcType = .mifareClassic1K
     var uid : Data
-    var data : Data = Data()
+    var data : Data = Data(count: MifareClassic.tokenSize)
     
     var filename : String {
         get {
@@ -51,7 +51,6 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     init(uid: Data) {
         self.uid = uid
-        self.data = Data(capacity: MifareClassic.tokenSize)
         self.data.replaceSubrange(0..<4, with: uid)        
     }
     
