@@ -58,7 +58,7 @@ func calculateCRCCCITT(_ seed: UInt16, data: Data) -> UInt16 {
 extension Data {
     var crcCCITT : Data {
         var crc = calculateCRCCCITT(SEED, data: self)
-        return Data(bytes: UnsafePointer<UInt8>(&crc), count: sizeof(UInt16))
+        return Data(buffer: UnsafeBufferPointer(start: &crc, count: 2))
     }
 }
 

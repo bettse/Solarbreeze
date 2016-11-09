@@ -31,28 +31,28 @@ class Token : MifareClassic {
     //Also known as 'ID' or 'type'.  I wanted to avoid those terms because of their alternate meanings
     var modelId : UInt16 {
         get {
-            return block(1).subdata(in: NSMakeRange(0, 2)).uint16
+            return block(1).subdata(in: 0..<2).uint16
         }
         set(newModelId) {
             //Assume this is happening on a zero'd out new token
             var m = newModelId
-            let newBlock = (block(1) as NSData).mutableCopy()
-            (newBlock as AnyObject).replaceBytes(in: NSMakeRange(0, 2), withBytes: &m)
-            load(1, blockData: newBlock as! Data)
+            var newBlock = block(1)
+            newBlock.replaceSubrange(0..<2, with: Data(buffer: UnsafeBufferPointer(start: &m, count: 1)))
+            load(1, blockData: newBlock)
             updateCrc()
         }
     }
     
     var flags : UInt16 {
         get {
-            return block(1).subdata(in: NSMakeRange(12, 2)).uint16
+            return block(1).subdata(in: 12..<14).uint16
         }
         set (newFlags) {
             //Assume this is happening on a zero'd out new token
             var m = newFlags
-            let newBlock = (block(1) as NSData).mutableCopy()
-            (newBlock as AnyObject).replaceBytes(in: NSMakeRange(12, 2), withBytes: &m)
-            load(1, blockData: newBlock as! Data)
+            var newBlock = block(1)
+            newBlock.replaceSubrange(12..<14, with: Data(buffer: UnsafeBufferPointer(start: &m, count: 1)))
+            load(1, blockData: newBlock)
             updateCrc()
         }
     }
@@ -116,8 +116,8 @@ class Token : MifareClassic {
     }
     
     convenience init(image: Data) {
-        self.init(uid: image.subdata(in: NSMakeRange(0, 4)))
-        self.data = (image as NSData).mutableCopy() as! NSMutableData
+        self.init(uid: image.subdata(in: 0..<4))
+        self.data = image
     }
 
     func primaryData(_ offset: Int) -> Data {
@@ -162,24 +162,27 @@ class Token : MifareClassic {
     }
     
     func updateCrc(_ index : Int = 0) {
-        let input = NSMutableData()
+        var input = Data()
         switch (index) {
         case 0:
-            let block1 = (block(1).subdata(in: NSMakeRange(0, 14)) as NSData).mutableCopy()
+            var block1 = block(1).subdata(in: 0..<14)
             input.append(block(0))
-            input.append(block1 as! Data)
+            input.append(block1)
             block1.append(input.crcCCITT)
-            load(1, blockData: block1 as! Data)
+            load(1, blockData: block1)
         case 1:
-            let primary0 = (primaryData(0).subdata(in: NSMakeRange(0, 14)) as NSData).mutableCopy()
-            input.append(primary0 as! Data)
-            input.appendByte(5)
-            input.appendByte(0)
+            var primary0 = primaryData(0).subdata(in: 0..<14)
+            input.append(primary0)
+            var literal : UInt8
+            literal = 5
+            input.append(&literal, count: 1)
+            literal = 0
+            input.append(&literal, count: 1)
             
             primary0.append(input.crcCCITT)
             //print("primary0 = \(primary0) vs \(primaryData(0))")
             //print("encrypted primary0 = \(encrypt(primaryAreaNumber, blockData: primary0 as! NSData)) vs \(block(primaryAreaNumber))")
-            load(primaryAreaNumber, blockData: encrypt(primaryAreaNumber, blockData: primary0 as! Data))
+            load(primaryAreaNumber, blockData: encrypt(primaryAreaNumber, blockData: primary0))
         default:
             print("CRC Index \(index) is not supported")
         }
@@ -199,13 +202,13 @@ class Token : MifareClassic {
         }
         let key = self.keyForBlock(blockNumber)
         
-        let aes = try! AES(key: key.arrayOfBytes(), blockMode: .ecb, padding: NoPadding())
+        let aes = try! AES(key: key.bytes, blockMode: .ECB, padding: NoPadding())
         var newBytes : [UInt8]
         
         if (encrypt) {
-            newBytes = try! aes.encrypt(blockData.arrayOfBytes())
+            newBytes = try! aes.encrypt(blockData.bytes)
         } else {
-            newBytes = try! aes.decrypt(blockData.arrayOfBytes())
+            newBytes = try! aes.decrypt(blockData.bytes)
         }
         
         return Data(bytes: newBytes)
@@ -239,7 +242,7 @@ class Token : MifareClassic {
     
     static func build(_ model: Model) -> Token {
         var random = arc4random()
-        let uid = Data(bytes: UnsafePointer<UInt8>(&random), count: sizeof(UInt32))
+        let uid = Data(buffer: UnsafeBufferPointer(start: &random, count: 4))
         let token = Token(uid: uid)
 
         (1..<MifareClassic.blockCount).forEach { (blockNumber) in

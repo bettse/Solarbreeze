@@ -100,7 +100,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     
     func outgoingReport(_ report: Data) {
         if let peripheralManager = self.peripheralManager {
-            if peripheralManager.state == CBPeripheralManagerState.poweredOn {
+            if peripheralManager.state == .poweredOn {
                 //print("=> \(report)")
                 peripheralManager.updateValue(report, for: self.readCharacteristic, onSubscribedCentrals: nil)
             } else {

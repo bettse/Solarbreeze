@@ -113,7 +113,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             let contents = NSMutableData(capacity: MifareClassic.tokenSize)!
             for i in 0..<MifareClassic.blockCount { contents.append(token.decryptedBlock(i)) }
             let filename = "\(token.name)-unencrypted-\(Date()).bak"
-            contents.write(to: appDelegate.applicationDocumentsDirectory.appendingPathComponent(filename)!, atomically: true)
+            contents.write(to: appDelegate.applicationDocumentsDirectory.appendingPathComponent(filename), atomically: true)
             print("Saved \(filename)")
         default:
             break

@@ -15,25 +15,25 @@ class SkylanderToken : Token {
     
     var xp0 : UInt16 {
         get {
-            return primaryData(0).subdata(with: NSMakeRange(0, 2)).uint16
+            return primaryData(0).subdata(in: 0..<2).uint16
         }
     }
     
     var xp1 : UInt16 {
         get {
-            return primaryData(9).subdata(with: NSMakeRange(3, 2)).uint16
+            return primaryData(9).subdata(in: 3..<5).uint16
         }
     }
     
     var xp2 : UInt32 {
         get {
-            return primaryData(9).subdata(with: NSMakeRange(8, 3)).uint32
+            return primaryData(9).subdata(in: 8..<11).uint32
         }
     }
     
     var gold : UInt16 {
         get {
-            return primaryData(0).subdata(with: NSMakeRange(3, 2)).uint16
+            return primaryData(0).subdata(in: 3..<5).uint16
         }
         set(newVal) {
             var gold : UInt16 = newVal

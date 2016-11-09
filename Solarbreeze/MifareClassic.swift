@@ -36,7 +36,7 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     var nfcType : NfcType = .mifareClassic1K
     var uid : Data
-    var data : NSMutableData = NSMutableData()
+    var data : Data = Data()
     
     var filename : String {
         get {
@@ -51,8 +51,8 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     init(uid: Data) {
         self.uid = uid
-        self.data = NSMutableData(capacity: MifareClassic.tokenSize)!
-        self.data.replaceBytes(in: NSMakeRange(0, 4), withBytes: (uid as NSData).bytes)
+        self.data = Data(capacity: MifareClassic.tokenSize)
+        self.data.replaceSubrange(0..<4, with: uid)        
     }
     
     
@@ -69,13 +69,12 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     func block(_ blockNumber: Int) -> Data {
         let blockStart = blockNumber * MifareClassic.blockSize
-        let blockRange = NSMakeRange(blockStart, MifareClassic.blockSize)
-        return data.subdata(with: blockRange)
+        return data.subdata(in: blockStart..<(blockStart+MifareClassic.blockSize))
     }
     
     func load(_ blockNumber: Int, blockData: Data) {
-        let blockRange = NSMakeRange(blockNumber * MifareClassic.blockSize, MifareClassic.blockSize)
-        data.replaceBytes(in: blockRange, withBytes: (blockData as NSData).bytes)
+        let blockStart = blockNumber * MifareClassic.blockSize
+        data.replaceSubrange(blockStart..<(blockStart+MifareClassic.blockSize), with: blockData)
     }
     
     func load(_ blockNumber: UInt8, blockData: Data) {
@@ -87,6 +86,9 @@ class MifareClassic : Hashable, CustomStringConvertible {
     }
     
     func dump(_ path: URL) {
-        data.write(to: path.appendingPathComponent(filename), atomically: true)
+        do {
+            try data.write(to: path.appendingPathComponent(filename), options: .atomic)
+        } catch {
+        }
     }
 }
