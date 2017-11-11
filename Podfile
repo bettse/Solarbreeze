@@ -6,5 +6,5 @@ use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Solarbreeze' do
-  pod 'CryptoSwift', git: "https://github.com/krzyzanowskim/CryptoSwift", branch: "swift32"
+  pod 'CryptoSwift', '~> 0.7.1'
 end
