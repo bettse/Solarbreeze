@@ -202,7 +202,7 @@ class Token : MifareClassic {
         }
         let key = self.keyForBlock(blockNumber)
         
-        let aes = try! AES(key: key.bytes, blockMode: .ECB, padding: NoPadding())
+        let aes = try! AES(key: key.bytes, blockMode: .ECB, padding: Padding.noPadding)
         var newBytes : [UInt8]
         
         if (encrypt) {

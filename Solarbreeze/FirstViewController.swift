@@ -28,7 +28,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         // Dispose of any resources that can be recreated.
     }
 
-    func firmwareSwitch() {
+    @objc func firmwareSwitch() {
         //Disable idle timer when fakebase is on
         UIApplication.shared.isIdleTimerDisabled = onSwitch.isOn
         if onSwitch.isOn {

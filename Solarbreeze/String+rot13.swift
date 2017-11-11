@@ -12,8 +12,8 @@ extension String {
     var rot13: String {
         get {
             var rot13key = [Character:Character]()
-            let uppercase : [Character] = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ".characters)
-            let lowercase : [Character] = Array("abcdefghijklmnopqrstuvwxyz".characters)
+            let uppercase : [Character] = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            let lowercase : [Character] = Array("abcdefghijklmnopqrstuvwxyz")
             for u in uppercase {
                 rot13key[u] = uppercase[(uppercase.index(of: u)! + 13) % 26]
             }
@@ -21,7 +21,7 @@ extension String {
                 rot13key[l] = lowercase[(lowercase.index(of: l)! + 13) % 26]
             }
             
-            return String(self.characters.map({ rot13key[$0] ?? $0 }))
+            return String(self.map({ rot13key[$0] ?? $0 }))
         }
     }
 }
