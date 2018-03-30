@@ -1,8 +1,8 @@
 //
 //  ThePoster.swift
-//  Solarbreeze
+//  TokenMaker
 //
-//  Created by Eric Betts on 5/28/16.
+//  Created by Eric Betts on 5/30/16.
 //  Copyright © 2016 Eric Betts. All rights reserved.
 //
 
@@ -11,13 +11,14 @@ import UIKit
 
 /*
  ThePoster is a way of looking up token data.
- It helps associate internal represetations from the token 
- data to the real world name and characteristics. 
- Like how you might use a real world poster to look 
+ It helps associate internal represetations from the token
+ data to the real world name and characteristics.
+ Like how you might use a real world poster to look
  at a list of the figures, their pictures, or stats
  */
 
-enum Variants : UInt8 {
+enum Variant : UInt8 {
+    case `default` = 0x00
     case giants = 0x01
     case variant = 0x02
     case legendary = 0x03
@@ -29,7 +30,7 @@ enum Variants : UInt8 {
     case xmasNY = 0x0E
     case instant = 0x0F
     case eonsElite = 0x10
-    case gotD = 0x11
+    case gitD = 0x11
     case stone = 0x12
     case sparkle = 0x13
     case snowPurple = 0x14
@@ -42,6 +43,25 @@ enum Variants : UInt8 {
     case crystalwGreen = 0x1B
     case crystalwPurple = 0x1C
     case crystal = 0x1D
+    case gold = 0x1E
+    var description : String {
+        get {
+            switch(self) {
+            case .default: return "Default"
+            case .instant: return "Instant"
+            case .eonsElite: return "Eon's Elite"
+            case .trapTeam: return "Trap Team"
+            case .eventExclusive: return "Event Exclusive"
+            case .gitD: return "Glow in the Dark"
+            case .easter: return "Easter"
+            case .xmasNY: return "Christmas/New Years"
+            case .halloween: return "Halloween"
+            case .gold: return "Gold"
+            default: return "<\(self.rawValue)>"
+            }
+        }
+        
+    }
 }
 
 enum Element : UInt {
@@ -65,17 +85,17 @@ enum Series : UInt {
                 return "Trap Team"
             case .superChargers:
                 return "SuperChargers"
-            default:
-                return ""
+            case .imaginators:
+                return "Imaginators"
             }
         }
     }
-
+    
 }
 
 //Adventure Packs are categorized as MagicItems.
 enum Role : UInt {
-    case none, skylander, giant, swapForce, trapMaster, superCharger, vehicle, sidekick, mini, magicItem
+    case none, skylander, giant, swapForce, trapMaster, superCharger, vehicle, sidekick, mini, magicItem, sensei, creationCrystal
     var description : String {
         get {
             switch(self) {
@@ -98,7 +118,11 @@ enum Role : UInt {
             case .mini:
                 return "Mini"
             case .magicItem:
-                return "Item"        
+                return "Item"
+            case .sensei:
+                return "Sensei"
+            case .creationCrystal:
+                return "Creation Crystal"
             }
         }
     }
@@ -128,6 +152,7 @@ class Model {
              0xD0...0xD1,
              0xD2...0xDC, //Traps
              0xE6...0xE9,
+             0xEB, //Chest
              0x12C...0x130, //Adventure packs
              0x131...0x134: //TT Adventure packs
             return .magicItem
@@ -149,8 +174,9 @@ class Model {
             return .skylander
         case 0x1F6...0x1FE:
             return .mini
-        case 0x202...0x21F:
-            return .mini
+        case 0x259: return .sensei
+        case 0x265: return .sensei
+        case 0x2AD: return .creationCrystal
         case 0x3E8...0xC84:
             return .swapForce
         case 0xC94...0xCA9:
@@ -178,6 +204,7 @@ class Model {
             return .trapTeam
         case 0xE6...0xE9:
             return .trapTeam
+        case 0xEB: return .imaginators
         case 0x12C...0x130: //Adventure packs
             return .spyrosAdventure
         case 0x131...0x134: //TT Adventure packs
@@ -188,6 +215,9 @@ class Model {
             return .trapTeam
         case 0x21C...0x21F:
             return .giants
+        case 0x259: return .imaginators
+        case 0x265: return .imaginators
+        case 0x2AD: return .imaginators
         case 0x3E8...0xC84:
             return .swapForce
         case 0xC94...0xCA9:
@@ -267,6 +297,9 @@ class Model {
         case 0x21F:
             return .undead
         //XX: Skiping Some
+        case 0x259: return .water
+        case 0x265: return .earth
+        case 0x2AD: return .fire
         //Vehicles
         case 0xC94: return .air
         case 0xC95: return .undead
@@ -359,6 +392,8 @@ class Model {
                 d = 0x30
             case .superChargers:
                 d = 0x40
+            case .imaginators:
+                d = 0x50
             default:
                 c = 0
                 d = 0
@@ -369,6 +404,16 @@ class Model {
         }
     }
     
+    var validVariants : [Variant] {
+        get {
+            switch (id) {
+            case 0xC98: return [.default, .eventExclusive, .gold]
+            case 0xD64: return [.default, .easter]
+            default:
+                return [.default]
+            }
+        }
+    }
     
     init(id: UInt, flags: UInt16 = 0) {
         self.id = id
@@ -378,12 +423,6 @@ class Model {
             self.flags = flags
         }
     }
-    
-    /*
-    func copyWithZone(zone: NSZone) -> Model {
-        return Model(id: self.id)
-    }
-    */
 }
 
 class ThePoster {
@@ -470,6 +509,7 @@ class ThePoster {
         0xE7 : "Piggy Bank",
         0xE8 : "Rocket Ram",
         0xE9 : "Teaky Sneaky",
+        0xEB : "Silver Mystery Chest",
         0x12C : "Dragon's Peak",
         0x12D : "Empire of Ice",
         0x12E : "Pirate Seas",
@@ -535,6 +575,9 @@ class ThePoster {
         0x21D : "Thumpling",
         0x21E : "Minijini",
         0x21F : "Eye Small",
+        0x259 : "King Pen",
+        0x265 : "Golden Queen",
+        0x2AD : "Fire Acorn",
         0x3E8 : "(Boom) Jet",
         0x3E9 : "(Free) Ranger",
         0x3EA : "(Rubble) Rouser",
