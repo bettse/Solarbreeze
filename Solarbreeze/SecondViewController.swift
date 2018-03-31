@@ -59,8 +59,9 @@ class SecondViewController : UIViewController, PortalUIProtocol {
         progress.setProgress(Float(number + 1)/Float(MifareClassic.blockCount), animated: true)
     }
     
-    func tokenSave(model: Model) {
-        log("\(model.series) \(model.id) \(model.name)")
+    func tokenSave(token: SkylanderToken) {
+        let model = token.model
+        log("\(model.series) \(model.id) \(token.uid.toHexString())")
         progress.setProgress(1.0, animated: true)
     }
 }

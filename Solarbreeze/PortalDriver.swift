@@ -67,9 +67,8 @@ class PortalDriver : PortalDelegate {
                 
                 if (Int(block) == MifareClassic.blockCount - 1) {
                     if let token = self.next.token {
-                        let model = token.model
-                        // print("\(model.id) \(model.series) \(model.name) - (\(model.role))")
-                        DispatchQueue.main.sync() { self.ui.tokenSave(model: model) }
+                        DispatchQueue.main.sync() { self.ui.tokenSave(token: token) }
+                        // Hmm...could do the token.dump /in/ the self.ui.tokenSave
                         token.dump(appDelegate.applicationDocumentsDirectory)
                     }
                 }
