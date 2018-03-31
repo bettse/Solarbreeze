@@ -12,7 +12,6 @@ class SecondViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let portalDriver : PortalDriver = PortalDriver.singleton
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class PortalDriver : PortalDelegate {
     enum Key : UInt8 {
@@ -15,19 +16,7 @@ class PortalDriver : PortalDelegate {
     }
     static let singleton = PortalDriver()
     let HEX = 0x10
-    let white : Data = Data(bytes: ["C".asciiValue, 0xFF, 0xFF, 0xFF])
-    let red : Data = Data(bytes: ["C".asciiValue, 0xFF, 0x00, 0x00])
-    let green : Data = Data(bytes: ["C".asciiValue, 0x00, 0xFF, 0x00])
-    let blue : Data = Data(bytes: ["C".asciiValue, 0x00, 0x00, 0xFF])
-    let purple : Data = Data(bytes: ["C".asciiValue, 0xFF, 0x00, 0xFF])
-    var timer : Timer?
-    let fileManager = FileManager.default
-
-    var downloadsDirectory: URL {
-        get {
-            return fileManager.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        }
-    }
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var portal : ProxyPortal = ProxyPortal()
     var next : (index: UInt8, token: SkylanderToken?) = (0, nil)
@@ -81,7 +70,7 @@ class PortalDriver : PortalDelegate {
                     if let token = self.next.token {
                         let model = token.model
                         print("\(model.id) \(model.series) \(model.name) - (\(model.role))")
-                        token.dump(URL(string:"file:///Users/bettse/Downloads/")!)
+                        token.dump(appDelegate.applicationDocumentsDirectory)
                     }
                 }
             }
@@ -100,7 +89,6 @@ class PortalDriver : PortalDelegate {
                     writeToken(index, block: block+1)
                 case UInt8(MifareClassic.blockCount - 1):
                     self.next = (0, nil)
-                    portal.output(green)
                 default:
                     print("Ack for writing block \(block)")
                 }
@@ -176,8 +164,5 @@ class PortalDriver : PortalDelegate {
     }
     
     func deviceDisconnected(_ portal : Portal) {
-        if let timer = timer {
-            timer.invalidate()
-        }        
     }
 }
