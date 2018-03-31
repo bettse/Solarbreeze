@@ -17,3 +17,11 @@ protocol PortalDelegate {
     func deviceDisconnected(_ portal : Portal)
     func input(_ report: Data)
 }
+
+protocol PortalUIProtocol {
+    func connected()
+    func disconnected()
+    func newToken()
+    func readBlock(number : Int)
+    func tokenSave()
+}

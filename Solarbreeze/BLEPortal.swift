@@ -31,9 +31,10 @@ class BLEPortal : Portal, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if (central.state == .poweredOn) {
+            print("Central state \(central.state)")
             let peripherals = central.retrieveConnectedPeripherals(withServices: [short_service_uuid])
             if (peripherals.isEmpty) {
-                //print("No peripherals known, scanning")
+                print("No peripherals known, scanning")
                 central.scanForPeripherals(withServices: [short_service_uuid], options:nil)
             } else {
                 if (peripherals.count > 1) {
@@ -50,7 +51,7 @@ class BLEPortal : Portal, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        //print("didConnectPeripheral")
+        print("didConnectPeripheral")
         central.stopScan()
         peripheral.delegate = self
         peripheral.discoverServices([service_uuid])
@@ -62,7 +63,7 @@ class BLEPortal : Portal, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        //print("didDiscoverPeripheral \(peripheral)")
+        print("didDiscoverPeripheral \(peripheral)")
         if let device = self.device {
             if device.state == .disconnected {
                 central.connect(device, options: nil)
@@ -129,5 +130,4 @@ class BLEPortal : Portal, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         peripheral.writeValue(report, for: writeCharacteristic, type: .withResponse)
     }
-    
 }

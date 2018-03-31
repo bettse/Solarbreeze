@@ -12,7 +12,6 @@
 		6D85B00F206EF04900AE73A6 /* BLEPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D85B00E206EF04800AE73A6 /* BLEPortal.swift */; };
 		6D85B012206EF08600AE73A6 /* PortalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D85B010206EF08600AE73A6 /* PortalDelegate.swift */; };
 		6D85B013206EF08600AE73A6 /* PortalDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D85B011206EF08600AE73A6 /* PortalDriver.swift */; };
-		6D85B017206EF86B00AE73A6 /* ProxyPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D85B016206EF86B00AE73A6 /* ProxyPortal.swift */; };
 		6DC2DDCD1CF93465008ECB57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */; };
 		6DC2DDCF1CF93465008ECB57 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */; };
 		6DC2DDD11CF93465008ECB57 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2DDD01CF93465008ECB57 /* SecondViewController.swift */; };
@@ -41,7 +40,6 @@
 		6D85B00E206EF04800AE73A6 /* BLEPortal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLEPortal.swift; sourceTree = "<group>"; };
 		6D85B010206EF08600AE73A6 /* PortalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalDelegate.swift; sourceTree = "<group>"; };
 		6D85B011206EF08600AE73A6 /* PortalDriver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalDriver.swift; sourceTree = "<group>"; };
-		6D85B016206EF86B00AE73A6 /* ProxyPortal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyPortal.swift; sourceTree = "<group>"; };
 		6DC2DDC91CF93465008ECB57 /* Solarbreeze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solarbreeze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 				6D85B00E206EF04800AE73A6 /* BLEPortal.swift */,
 				6D85B010206EF08600AE73A6 /* PortalDelegate.swift */,
 				6D85B011206EF08600AE73A6 /* PortalDriver.swift */,
-				6D85B016206EF86B00AE73A6 /* ProxyPortal.swift */,
 				6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */,
 				6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */,
 				6DC2DDD01CF93465008ECB57 /* SecondViewController.swift */,
@@ -290,7 +287,6 @@
 				6DC9CFB31CFA43490028700C /* NSMutableData+appendByte.swift in Sources */,
 				6DC9CFB51CFA45230028700C /* String+rot13.swift in Sources */,
 				6D85B012206EF08600AE73A6 /* PortalDelegate.swift in Sources */,
-				6D85B017206EF86B00AE73A6 /* ProxyPortal.swift in Sources */,
 				6D3753A81CFA5ED0009D4A43 /* SkylanderToken.swift in Sources */,
 				6D3753AD1CFB72EE009D4A43 /* NSData+CCITT.swift in Sources */,
 				6DC9CFAD1CFA335A0028700C /* NSData+asUint.swift in Sources */,

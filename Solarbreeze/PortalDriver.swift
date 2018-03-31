@@ -14,22 +14,22 @@ class PortalDriver : PortalDelegate {
         case factory = 0x00
         case keygen = 0x01
     }
-    static let singleton = PortalDriver()
     let HEX = 0x10
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    var portal : ProxyPortal = ProxyPortal()
+    let portal : BLEPortal
     var next : (index: UInt8, token: SkylanderToken?) = (0, nil)
     
-    init() {
+    let ui : PortalUIProtocol
+    
+    init(ui : PortalUIProtocol) {
+        portal = BLEPortal.singleton        
+        self.ui = ui
         self.portal.delegate = self
     }
     
-    func build(_ model: Model) {
-        if let token = self.next.token {
-            token.model = model
-            writeToken(self.next.index, block: 1)
-        }
+    func discover() {
+        self.portal.discover()
     }
     
     func input(_ report: Data) {
@@ -39,6 +39,7 @@ class PortalDriver : PortalDelegate {
         switch(command) {
         case "A".asciiValue:
             print("Activate ack \(contents)")
+            self.ui.connected()
         case "K".asciiValue:
             print("Key configuration ack \(contents)")
         case "Q".asciiValue:
@@ -52,12 +53,10 @@ class PortalDriver : PortalDelegate {
                 keyConfig(Key.factory)
             } else {
                 if (block == 0) {
-                    //print("Building blank")
                     self.next = (index, SkylanderToken(uid:blockData.subdata(in: 0..<4)))
                     if let token = self.next.token {
                         token.load(block, blockData: blockData)
                     }
-                    //portal.output(blue)
                 }
                 if (Int(block) < MifareClassic.blockCount) {
                     self.next.token?.load(block, blockData: blockData)
@@ -70,6 +69,7 @@ class PortalDriver : PortalDelegate {
                     if let token = self.next.token {
                         let model = token.model
                         print("\(model.id) \(model.series) \(model.name) - (\(model.role))")
+                        self.ui.tokenSave()
                         token.dump(appDelegate.applicationDocumentsDirectory)
                     }
                 }
@@ -125,12 +125,14 @@ class PortalDriver : PortalDelegate {
         if ((updateBits & stateBits) > 0) { //Arrival
             let index : UInt8 = UInt8(log2(Float(updateBits)))
             print("New token at index \(index)")
+            self.ui.newToken()
             readToken(index, block: 0)
         }
     }
     
     func readToken(_ index: UInt8, block: UInt8) {
         print("Read [\(block)] @ \(index)")
+        self.ui.readBlock(number: Int(block))
         let readBlock = Data(bytes: ["Q".asciiValue, index, block] as [UInt8])
         portal.output(readBlock)
     }
@@ -164,5 +166,6 @@ class PortalDriver : PortalDelegate {
     }
     
     func deviceDisconnected(_ portal : Portal) {
+        self.ui.disconnected()
     }
 }
