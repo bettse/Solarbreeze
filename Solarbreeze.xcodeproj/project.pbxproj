@@ -30,6 +30,7 @@
 		6DC9CFB11CFA3B960028700C /* Dictionary+get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */; };
 		6DC9CFB31CFA43490028700C /* NSMutableData+appendByte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB21CFA43490028700C /* NSMutableData+appendByte.swift */; };
 		6DC9CFB51CFA45230028700C /* String+rot13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC9CFB41CFA45230028700C /* String+rot13.swift */; };
+		6DECFAC9206F53AB00F5078C /* Date+format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DECFAC8206F53AB00F5078C /* Date+format.swift */; };
 		EF9A6D5BD623A79620D2823A /* Pods_Solarbreeze.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DEC75DC273BDD59D8A60D88 /* Pods_Solarbreeze.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+get.swift"; sourceTree = "<group>"; };
 		6DC9CFB21CFA43490028700C /* NSMutableData+appendByte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableData+appendByte.swift"; sourceTree = "<group>"; };
 		6DC9CFB41CFA45230028700C /* String+rot13.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+rot13.swift"; sourceTree = "<group>"; };
+		6DECFAC8206F53AB00F5078C /* Date+format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+format.swift"; sourceTree = "<group>"; };
 		75396A9558424F3BE9333A87 /* Pods-Solarbreeze.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solarbreeze.release.xcconfig"; path = "Pods/Target Support Files/Pods-Solarbreeze/Pods-Solarbreeze.release.xcconfig"; sourceTree = "<group>"; };
 		9DEC75DC273BDD59D8A60D88 /* Pods_Solarbreeze.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Solarbreeze.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -126,6 +128,7 @@
 				6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */,
 				6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */,
 				6DC2DDD01CF93465008ECB57 /* SecondViewController.swift */,
+				6DECFAC8206F53AB00F5078C /* Date+format.swift */,
 				6DC9CFA81CFA2EC80028700C /* MifareClassic.swift */,
 				6DC9CFA61CFA2E720028700C /* Token.swift */,
 				6D3753A71CFA5ED0009D4A43 /* SkylanderToken.swift */,
@@ -280,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DECFAC9206F53AB00F5078C /* Date+format.swift in Sources */,
 				6DC9CFAF1CFA39F40028700C /* ThePoster.swift in Sources */,
 				6D85B00F206EF04900AE73A6 /* BLEPortal.swift in Sources */,
 				6DC2DDE31CF93663008ECB57 /* FakeBaseInterface.swift in Sources */,
