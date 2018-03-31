@@ -40,13 +40,13 @@ class MifareClassic : Hashable, CustomStringConvertible {
     
     var filename : String {
         get {
-            return "\(uid.toHex).bin"
+            return "\(uid.toHexString()).bin"
         }
     }
     
     var description: String {
         let me = String(describing: type(of: self)).components(separatedBy: ".").last!
-        return "\(me)(\(uid.toHex))"
+        return "\(me)(\(uid.toHexString()))"
     }
     
     init(uid: Data) {

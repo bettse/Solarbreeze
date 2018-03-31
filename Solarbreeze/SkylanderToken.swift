@@ -10,7 +10,7 @@ import Foundation
 class SkylanderToken : Token {
     override var description: String {
         let me = String(describing: type(of: self)).components(separatedBy: ".").last!
-        return "\(me)(\(uid.toHex) - \(name) xp: \(xp0)/\(xp1)/\(xp2) gold: \(gold))"
+        return "\(me)(\(uid.toHexString()) - \(name) xp: \(xp0)/\(xp1)/\(xp2) gold: \(gold))"
     }
     
     var xp0 : UInt16 {

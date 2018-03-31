@@ -89,6 +89,7 @@
 		6D3753A91CFA63D6009D4A43 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6DECFAC8206F53AB00F5078C /* Date+format.swift */,
 				6D3753AC1CFB72EE009D4A43 /* NSData+CCITT.swift */,
 				6DC9CFB21CFA43490028700C /* NSMutableData+appendByte.swift */,
 				6DC9CFB01CFA3B960028700C /* Dictionary+get.swift */,
@@ -128,7 +129,6 @@
 				6DC2DDCC1CF93465008ECB57 /* AppDelegate.swift */,
 				6DC2DDCE1CF93465008ECB57 /* FirstViewController.swift */,
 				6DC2DDD01CF93465008ECB57 /* SecondViewController.swift */,
-				6DECFAC8206F53AB00F5078C /* Date+format.swift */,
 				6DC9CFA81CFA2EC80028700C /* MifareClassic.swift */,
 				6DC9CFA61CFA2E720028700C /* Token.swift */,
 				6D3753A71CFA5ED0009D4A43 /* SkylanderToken.swift */,

@@ -15,8 +15,5 @@ public extension Data {
         self = Data(bytes: hexBytes as [UInt8])        
     }
     
-    var toHex : String {
-        let s = "\(self)".components(separatedBy: " ").joined(separator: "").trimmingCharacters(in: CharacterSet.init(charactersIn: "< >"))
-        return s
-    }
+    // for `toHex` use toHexString() from CryptoSwift
 }

@@ -19,12 +19,12 @@ class Token : MifareClassic {
     
     override var description: String {
         let me = String(describing: type(of: self)).components(separatedBy: ".").last!
-        return "\(me)(\(uid.toHex) - \(name))"
+        return "\(me)(\(uid.toHexString()) - \(name))"
     }
     
     override var filename : String {
         get {
-            return "\(uid.toHex)-\(name).bin"
+            return "\(uid.toHexString())-\(name).bin"
         }
     }
 
