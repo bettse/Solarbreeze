@@ -23,5 +23,5 @@ protocol PortalUIProtocol {
     func disconnected()
     func newToken()
     func readBlock(number : Int)
-    func tokenSave()
+    func tokenSave(model: Model)
 }

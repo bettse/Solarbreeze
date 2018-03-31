@@ -18,11 +18,8 @@ class SecondViewController : UIViewController, PortalUIProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        // Button to look for portal, indicate state
-        // Progress for found token, blocks dumped
-        // Text view of dumped UIDs
-        // dumps saved for later access.
+
+        log.text = ""
         portalDriver = PortalDriver(ui: self)
         discover.addTarget(self, action: #selector(startDriver), for: .touchUpInside)
     }
@@ -40,7 +37,7 @@ class SecondViewController : UIViewController, PortalUIProtocol {
     }
     
     func log(_ msg : String) {
-        log.insertText("\(Date()) \(msg)")
+        log.insertText("\(Date().customTime) \(msg)\n")
     }
     
     func connected() {
@@ -62,7 +59,8 @@ class SecondViewController : UIViewController, PortalUIProtocol {
         progress.setProgress(Float(number + 1)/Float(MifareClassic.blockCount), animated: true)
     }
     
-    func tokenSave() {
+    func tokenSave(model: Model) {
+        log("\(model.series) \(model.id) \(model.name)")
         progress.setProgress(1.0, animated: true)
     }
 }

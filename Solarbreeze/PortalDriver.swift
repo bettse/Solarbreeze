@@ -38,8 +38,8 @@ class PortalDriver : PortalDelegate {
         
         switch(command) {
         case "A".asciiValue:
-            print("Activate ack \(contents)")
-            self.ui.connected()
+            print("Activate ack \(contents.toHexString())")
+            DispatchQueue.main.sync() { self.ui.connected() }
         case "K".asciiValue:
             print("Key configuration ack \(contents)")
         case "Q".asciiValue:
@@ -68,8 +68,8 @@ class PortalDriver : PortalDelegate {
                 if (Int(block) == MifareClassic.blockCount - 1) {
                     if let token = self.next.token {
                         let model = token.model
-                        print("\(model.id) \(model.series) \(model.name) - (\(model.role))")
-                        self.ui.tokenSave()
+                        // print("\(model.id) \(model.series) \(model.name) - (\(model.role))")
+                        DispatchQueue.main.sync() { self.ui.tokenSave(model: model) }
                         token.dump(appDelegate.applicationDocumentsDirectory)
                     }
                 }
@@ -124,15 +124,15 @@ class PortalDriver : PortalDelegate {
         let updateBits = Compact1By1(statusWord >> 1)
         if ((updateBits & stateBits) > 0) { //Arrival
             let index : UInt8 = UInt8(log2(Float(updateBits)))
-            print("New token at index \(index)")
-            self.ui.newToken()
+            // print("New token at index \(index)")
+            DispatchQueue.main.sync() { self.ui.newToken() }
             readToken(index, block: 0)
         }
     }
     
     func readToken(_ index: UInt8, block: UInt8) {
-        print("Read [\(block)] @ \(index)")
-        self.ui.readBlock(number: Int(block))
+        // print("Read [\(block)] @ \(index)")
+        DispatchQueue.main.sync() { self.ui.readBlock(number: Int(block)) }
         let readBlock = Data(bytes: ["Q".asciiValue, index, block] as [UInt8])
         portal.output(readBlock)
     }
@@ -166,6 +166,8 @@ class PortalDriver : PortalDelegate {
     }
     
     func deviceDisconnected(_ portal : Portal) {
-        self.ui.disconnected()
+        DispatchQueue.main.sync() { self.ui.disconnected() }
     }
 }
+
+
