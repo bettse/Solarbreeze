@@ -29,6 +29,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     var previousValue : NSMutableData?
     
     func start() {
+        print("start")
         let queue = DispatchQueue.main
         peripheralManager = CBPeripheralManager(delegate: self, queue: queue)
     }
@@ -50,6 +51,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
         case .poweredOff:
             print("BLE OFF")
         case .poweredOn:
+            print("BLE ON")
             service = CBMutableService(type: FakeBaseInterface.service_uuid, primary: true)
             service!.characteristics = [readCharacteristic, writeCharacteristic]
             peripheral.add(service!)
@@ -89,7 +91,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
         for request in requests {
             peripheral.respond(to: request, withResult: CBATTError.Code.success)
             if let newValue = request.value {
-                //print("<= \(newValue)")
+                print("<= \(newValue)")
                 for callback in incomingReportCallbacks {
                     callback(newValue)
                 }
@@ -100,7 +102,7 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     func outgoingReport(_ report: Data) {
         if let peripheralManager = self.peripheralManager {
             if peripheralManager.state == .poweredOn {
-                //print("=> \(report)")
+                print("=> \(report)")
                 peripheralManager.updateValue(report, for: self.readCharacteristic, onSubscribedCentrals: nil)
             } else {
                 print("Attempted to send report when peripheralManager was not powered on")

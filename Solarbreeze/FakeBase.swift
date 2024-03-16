@@ -95,7 +95,7 @@ class FakeBase {
     
     func incomingReport(_ report: Data) {
         var response : Data = Data()
-        //print("Command \(Character(UnicodeScalar(report[0])))")
+        print("Command \(Character(UnicodeScalar(report[0])))")
 
         switch(report[0]){
         case "A".asciiValue:
