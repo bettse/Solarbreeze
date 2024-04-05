@@ -45,17 +45,17 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
     }
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        peripheral.removeAllServices()
         switch peripheral.state {
         case .poweredOff:
             print("BLE OFF")
+            peripheral.removeAllServices()
+            peripheral.stopAdvertising()
         case .poweredOn:
             service = CBMutableService(type: FakeBaseInterface.service_uuid, primary: true)
             service!.characteristics = [readCharacteristic, writeCharacteristic]
             peripheral.add(service!)
             peripheral.startAdvertising(
                 [
-                    CBAdvertisementDataSolicitedServiceUUIDsKey: [FakeBaseInterface.service_uuid],
                     CBAdvertisementDataServiceUUIDsKey: [FakeBaseInterface.short_service_uuid],
                     CBAdvertisementDataLocalNameKey: "Skylanders Portal\0"
                 ]
@@ -64,8 +64,10 @@ class FakeBaseInterface : NSObject, CBPeripheralManagerDelegate {
             print("NOT RECOGNIZED")
         case .unsupported:
             print("BLE NOT SUPPORTED")
+        case .unauthorized:
+            print("BLE NOT AUTHORIZED")
         case .resetting:
-            print("BLE NOT SUPPORTED")
+            print("BLE RESETTING")
         default:
             print("Error")
         }
